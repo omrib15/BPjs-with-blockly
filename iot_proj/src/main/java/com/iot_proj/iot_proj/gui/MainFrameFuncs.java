@@ -11,7 +11,7 @@ public class MainFrameFuncs {
 	
 	public void runBprog(String path) throws InterruptedException{
 		//running 
-		BProgram bprog = new SingleResourceBProgram("our_resources/examples/"+path);
+		BProgram bprog = new SingleResourceBProgram(path);
 		BProgramRunner runner = new BProgramRunner(bprog);
 		runner.addListener(new PrintBProgramRunnerListener());
 		InMemoryEventLoggingListener eventLogger = new InMemoryEventLoggingListener();

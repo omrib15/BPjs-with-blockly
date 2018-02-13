@@ -13,14 +13,48 @@ import javax.swing.JFileChooser;
  */
 public class MainFrame extends javax.swing.JFrame {
 
-
 	private MainFrameFuncs funcs;
-    private final JFileChooser fc = new JFileChooser();
+    private final JFileChooser fc;
+    private String javaFolderAbsPath;
+	private final String relPathJsFolder;
+    private String currFileName; 
+   
+
+	public String getJavaFolderAbsPath() {
+		return javaFolderAbsPath;
+	}
+
+	public void setJavaFolderAbsPath(String javaFolderAbsPath) {
+		this.javaFolderAbsPath = javaFolderAbsPath;
+	}
+
+	public String getCurrFileName() {
+		return currFileName;
+	}
+
+	public void setCurrFileName(String currFileName) {
+		this.currFileName = currFileName;
+	}
+
+	public String getRelPathJsFolder() {
+		return relPathJsFolder;
+	}
+
 	
-    public MainFrame() {
+	//the empty constructor
+	public MainFrame() {
         initComponents();
         this.funcs = new MainFrameFuncs();
+        this.javaFolderAbsPath = System.getProperty("user.dir") + "/src/main/java/";
+        System.out.println(javaFolderAbsPath);
+        this.relPathJsFolder = "our_resources/examples/";
+        this.fc = new JFileChooser(javaFolderAbsPath + relPathJsFolder);
+        this.currFileName = "";
+       
     }
+	
+	
+	
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -93,14 +127,18 @@ public class MainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void chooseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseButtonActionPerformed
-
+    		//open the dialog box
             int returnVal = fc.showOpenDialog(MainFrame.this);
-
+            
+            //check that the file selection succeeded  
             if (returnVal == JFileChooser.APPROVE_OPTION) {
-                 File file = fc.getSelectedFile();
-                 System.out.println("Chosen file's name: " + fc.getName());
-                 //This is where a real application would open the file.
-                System.out.println("Chosen file: " + file.getName() + ".");
+            	File file = fc.getSelectedFile();
+                 
+                System.out.println("Chosen file: " + file.getAbsolutePath());
+                
+                //update the chosen file's name
+                setCurrFileName(file.getName());
+                
             } else {
                 System.out.println("Open command cancelled by user." );
             }
@@ -110,16 +148,23 @@ public class MainFrame extends javax.swing.JFrame {
     //click event listener for the run button
     private void runButtonActionPerformed(java.awt.event.ActionEvent evt) {                                          
         
-    	try {
-			funcs.runBprog("counter.js");
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    	if(!getCurrFileName().equals("")){
+    	
+    		try {
+    			//run the chosen js file 
+    			getFuncs().runBprog(relPathJsFolder + currFileName);
+    		} catch (InterruptedException e) {
+    			e.printStackTrace();
+			}
+    	}
     	
     }
 
-    /**
+    public MainFrameFuncs getFuncs() {
+		return funcs;
+	}
+
+	/**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
