@@ -4,18 +4,18 @@ import java.util.stream.Collectors;
 
 import org.mozilla.javascript.NativeArray;
 
-import il.ac.bgu.cs.bp.bpjs.bprogram.runtimeengine.BProgram;
-import il.ac.bgu.cs.bp.bpjs.bprogram.runtimeengine.BProgramRunner;
-import il.ac.bgu.cs.bp.bpjs.bprogram.runtimeengine.SingleResourceBProgram;
-import il.ac.bgu.cs.bp.bpjs.bprogram.runtimeengine.listeners.InMemoryEventLoggingListener;
-import il.ac.bgu.cs.bp.bpjs.bprogram.runtimeengine.listeners.PrintBProgramRunnerListener;
-import il.ac.bgu.cs.bp.bpjs.events.BEvent;
-import il.ac.bgu.cs.bp.bpjs.search.ForgetfulVisitedNodeStore;
-import il.ac.bgu.cs.bp.bpjs.search.Node;
-import il.ac.bgu.cs.bp.bpjs.verification.DfsBProgramVerifier;
-import il.ac.bgu.cs.bp.bpjs.verification.VerificationResult;
-import il.ac.bgu.cs.bp.bpjs.verification.listeners.BriefPrintDfsVerifierListener;
+import il.ac.bgu.cs.bp.bpjs.model.BProgram;
+import il.ac.bgu.cs.bp.bpjs.execution.BProgramRunner;
+import il.ac.bgu.cs.bp.bpjs.model.SingleResourceBProgram;
+import il.ac.bgu.cs.bp.bpjs.execution.listeners.InMemoryEventLoggingListener;
+import il.ac.bgu.cs.bp.bpjs.execution.listeners.PrintBProgramRunnerListener;
+import il.ac.bgu.cs.bp.bpjs.model.BEvent;
+import il.ac.bgu.cs.bp.bpjs.analysis.ForgetfulVisitedStateStore;
+import il.ac.bgu.cs.bp.bpjs.analysis.Node;
 import il.ac.bgu.cs.bp.bpjs.analysis.Requirements;
+import il.ac.bgu.cs.bp.bpjs.analysis.DfsBProgramVerifier;
+import il.ac.bgu.cs.bp.bpjs.analysis.VerificationResult;
+import il.ac.bgu.cs.bp.bpjs.analysis.listeners.BriefPrintDfsVerifierListener;
 
 
 public class SanityTest 
@@ -30,16 +30,16 @@ public class SanityTest
 		runner.addListener(eventLogger);
 
 			runner.start();
-		
-			System.out.println(e.getMessage());
+		//#TODO get a fair selection strategy, daemon=true and then enqueueExternalEvent. i dont think we need to add Listeners to the
+		//BProgram, logs are enough - but either way there are some examples (i saw some in the Deeper into BPjs slides)
 		
 
 		Maze maze = new Maze();
-		maze.run();
-		maze.verify();
+//		maze.run();
+//		maze.verify();
 	}
 
-	public class Maze{
+	public static class Maze{
 		String implementation = "maze-positive.js"; 
 		//        String implementation = "MazesNegative.js";
 		final BEvent targetFoundEvent = BEvent.named("targetFound");
@@ -49,8 +49,8 @@ public class SanityTest
 
 
 		public void run() throws InterruptedException {
-			SingleResourceBProgram bprog = prepareProgram();
-			BProgramRunner rnr = new BProgramRunner(bprog);
+			il.ac.bgu.cs.bp.bpjs.model.SingleResourceBProgram bprog = prepareProgram();
+			il.ac.bgu.cs.bp.bpjs.execution.BProgramRunner rnr = new BProgramRunner(bprog);
 			rnr.addListener(new PrintBProgramRunnerListener());
 			rnr.start();
 			printMaze(getMaze(bprog));
@@ -67,7 +67,7 @@ public class SanityTest
 				vfr.setProgressListener(new BriefPrintDfsVerifierListener());
 				vfr.setIterationCountGap(10);
 				//                vfr.setVisitedNodeStore(new BProgramStateVisitedNodeStore(true));
-				vfr.setVisitedNodeStore(new ForgetfulVisitedNodeStore());
+				vfr.setVisitedNodeStore(new ForgetfulVisitedStateStore());
 
 				vfr.setDetectDeadlocks(false); // prevent from detecting cases where we must hit a wall.
 				final VerificationResult res = vfr.verify(bprog);
