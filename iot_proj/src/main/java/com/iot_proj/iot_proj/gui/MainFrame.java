@@ -40,6 +40,9 @@ public class MainFrame extends javax.swing.JFrame {
 		return relPathJsFolder;
 	}
 
+	public MainFrameFuncs getFuncs() {
+		return funcs;
+	}
 	
 	//the empty constructor
 	public MainFrame() {
@@ -68,6 +71,7 @@ public class MainFrame extends javax.swing.JFrame {
         runButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         chooseButton = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(javax.swing.UIManager.getDefaults().getColor("ComboBox.selectionBackground"));
@@ -96,20 +100,25 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        jLabel2.setText("no file selected");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(150, 150, 150)
-                .addComponent(runButton, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(chooseButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(75, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(75, 75, 75))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(runButton, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(chooseButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(75, 75, 75))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -119,7 +128,8 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(runButton)
-                    .addComponent(chooseButton))
+                    .addComponent(chooseButton)
+                    .addComponent(jLabel2))
                 .addGap(155, 155, 155))
         );
 
@@ -138,12 +148,13 @@ public class MainFrame extends javax.swing.JFrame {
                 
                 //update the chosen file's name
                 setCurrFileName(file.getName());
+                jLabel2.setText(getCurrFileName());
                 
             } else {
                 System.out.println("Open command cancelled by user." );
             }
         }
-    //GEN-LAST:event_chooseButtonActionPerformed
+//GEN-LAST:event_chooseButtonActionPerformed
 
     //click event listener for the run button
     private void runButtonActionPerformed(java.awt.event.ActionEvent evt) {                                          
@@ -160,9 +171,6 @@ public class MainFrame extends javax.swing.JFrame {
     	
     }
 
-    public MainFrameFuncs getFuncs() {
-		return funcs;
-	}
 
 	/**
      * @param args the command line arguments
@@ -198,5 +206,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton runButton;
     private javax.swing.JButton chooseButton;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     // End of variables declaration//GEN-END:variables
 }
