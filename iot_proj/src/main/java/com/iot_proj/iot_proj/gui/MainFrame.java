@@ -4,17 +4,19 @@
  * and open the template in the editor.
  */
 package com.iot_proj.iot_proj.gui;
-import com.iot_proj.iot_proj.SanityTest;;
+import com.iot_proj.iot_proj.SanityTest;
+import java.io.File;
+import javax.swing.JFileChooser;
 /**
  *
  * @author omri basch
  */
 public class MainFrame extends javax.swing.JFrame {
 
+
 	private MainFrameFuncs funcs;
-    /**
-     * Creates new form MainFrame
-     */
+    private final JFileChooser fc = new JFileChooser();
+	
     public MainFrame() {
         initComponents();
         this.funcs = new MainFrameFuncs();
@@ -29,8 +31,9 @@ public class MainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
+        runButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        chooseButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(javax.swing.UIManager.getDefaults().getColor("ComboBox.selectionBackground"));
@@ -40,17 +43,24 @@ public class MainFrame extends javax.swing.JFrame {
         setName("MainFrame"); // NOI18N
         setResizable(false);
 
-        jButton1.setBackground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Run bp sanity test");
-        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        runButton.setBackground(new java.awt.Color(255, 255, 255));
+        runButton.setText("Run selected file");
+        runButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        runButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                runButtonActionPerformed(evt);
             }
         });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("Behavioral Programming with Blockly");
+
+        chooseButton.setText("Choose .js file");
+        chooseButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chooseButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -58,7 +68,9 @@ public class MainFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(150, 150, 150)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(runButton, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(chooseButton)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(75, Short.MAX_VALUE)
@@ -71,15 +83,32 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
                 .addGap(27, 27, 27)
-                .addComponent(jButton1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(runButton)
+                    .addComponent(chooseButton))
                 .addGap(155, 155, 155))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void chooseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseButtonActionPerformed
+
+            int returnVal = fc.showOpenDialog(MainFrame.this);
+
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                 File file = fc.getSelectedFile();
+                 System.out.println("Chosen file's name: " + fc.getName());
+                 //This is where a real application would open the file.
+                System.out.println("Chosen file: " + file.getName() + ".");
+            } else {
+                System.out.println("Open command cancelled by user." );
+            }
+        }
+    //GEN-LAST:event_chooseButtonActionPerformed
+
     //click event listener for the run button
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void runButtonActionPerformed(java.awt.event.ActionEvent evt) {                                          
         
     	try {
 			funcs.runBprog("counter.js");
@@ -117,16 +146,12 @@ public class MainFrame extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new MainFrame().setVisible(true);
-            }
-        });
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton runButton;
+    private javax.swing.JButton chooseButton;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }
