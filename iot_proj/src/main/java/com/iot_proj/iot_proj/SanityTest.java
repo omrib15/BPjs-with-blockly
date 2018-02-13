@@ -1,8 +1,11 @@
 package com.iot_proj.iot_proj;
 
+import java.io.IOException;
 import java.util.stream.Collectors;
 
 import org.mozilla.javascript.NativeArray;
+
+import com.iot_proj.iot_proj.blocklyeditor.BlocklyRunner;
 
 import il.ac.bgu.cs.bp.bpjs.model.BProgram;
 import il.ac.bgu.cs.bp.bpjs.execution.BProgramRunner;
@@ -20,27 +23,28 @@ import il.ac.bgu.cs.bp.bpjs.analysis.listeners.BriefPrintDfsVerifierListener;
 
 public class SanityTest 
 {
-	public static void main( String[] args ) throws InterruptedException
+	public static void main( String[] args ) throws InterruptedException, IOException
 	{
-		BProgram bprog = new SingleResourceBProgram("our_resources/examples/hello-world-seq.js");
-		//		bprog.setEventSelectionStrategy(new PrioritizedBSyncEventSelectionStrategy());
-		BProgramRunner runner = new BProgramRunner(bprog);
-		runner.addListener(new PrintBProgramRunnerListener());
-		InMemoryEventLoggingListener eventLogger = new InMemoryEventLoggingListener();
-		runner.addListener(eventLogger);
-
-			runner.start();
-		//#TODO get a fair selection strategy, daemon=true and then enqueueExternalEvent. i dont think we need to add Listeners to the
-		//BProgram, logs are enough - but either way there are some examples (i saw some in the Deeper into BPjs slides)
-		
-
-		Maze maze = new Maze();
+//		BProgram bprog = new SingleResourceBProgram("our_resources/examples/hello-world-seq.js");
+//		//		bprog.setEventSelectionStrategy(new PrioritizedBSyncEventSelectionStrategy());
+//		BProgramRunner runner = new BProgramRunner(bprog);
+//		runner.addListener(new PrintBProgramRunnerListener());
+//		InMemoryEventLoggingListener eventLogger = new InMemoryEventLoggingListener();
+//		runner.addListener(eventLogger);
+//
+//			runner.start();
+//		//#TODO get a fair selection strategy, daemon=true and then enqueueExternalEvent. i dont think we need to add Listeners to the
+//		//BProgram, logs are enough - but either way there are some examples (i saw some in the Deeper into BPjs slides)
+//		
+//
+//		Maze maze = new Maze();
 //		maze.run();
 //		maze.verify();
+		new BlocklyRunner().run();
 	}
 
 	public static class Maze{
-		String implementation = "maze-positive.js"; 
+		String implementation = "our_resources/examples/maze-positive.js"; 
 		//        String implementation = "MazesNegative.js";
 		final BEvent targetFoundEvent = BEvent.named("targetFound");
 
@@ -49,8 +53,8 @@ public class SanityTest
 
 
 		public void run() throws InterruptedException {
-			il.ac.bgu.cs.bp.bpjs.model.SingleResourceBProgram bprog = prepareProgram();
-			il.ac.bgu.cs.bp.bpjs.execution.BProgramRunner rnr = new BProgramRunner(bprog);
+			SingleResourceBProgram bprog = prepareProgram();
+			BProgramRunner rnr = new BProgramRunner(bprog);
 			rnr.addListener(new PrintBProgramRunnerListener());
 			rnr.start();
 			printMaze(getMaze(bprog));
