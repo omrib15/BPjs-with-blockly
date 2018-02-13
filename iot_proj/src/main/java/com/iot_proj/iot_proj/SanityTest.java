@@ -35,12 +35,12 @@ public class SanityTest
 		
 
 		Maze maze = new Maze();
-//		maze.run();
+		maze.run();
 //		maze.verify();
 	}
 
 	public static class Maze{
-		String implementation = "maze-positive.js"; 
+		String implementation = "our_resources/examples/maze-positive.js"; 
 		//        String implementation = "MazesNegative.js";
 		final BEvent targetFoundEvent = BEvent.named("targetFound");
 
@@ -49,8 +49,8 @@ public class SanityTest
 
 
 		public void run() throws InterruptedException {
-			il.ac.bgu.cs.bp.bpjs.model.SingleResourceBProgram bprog = prepareProgram();
-			il.ac.bgu.cs.bp.bpjs.execution.BProgramRunner rnr = new BProgramRunner(bprog);
+			SingleResourceBProgram bprog = prepareProgram();
+			BProgramRunner rnr = new BProgramRunner(bprog);
 			rnr.addListener(new PrintBProgramRunnerListener());
 			rnr.start();
 			printMaze(getMaze(bprog));
