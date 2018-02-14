@@ -2,7 +2,6 @@ package com.iot_proj.iot_proj;
 
 import com.iot_proj.iot_proj.gui.MainFrame;
 
-
 public class App 
 {
 	//the app's entry point
