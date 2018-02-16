@@ -23,7 +23,29 @@ Blockly.defineBlocksWithJsonArray([
         "check": "String"
       }
     ],
+	"output": "BP_EVENT",
     "colour": "0",
     "tooltip": "A BP Event"
-  }
+  },
   ])
+  
+  Blockly.Blocks['bp_bsync'] = {
+  init: function() {
+    this.setColour(290);
+    this.appendDummyInput()
+        .appendTitle("sync");
+    this.appendValueInput("REQUEST")
+        .setCheck(['event', Array])
+        .appendTitle("requested=");
+    this.appendValueInput("WAIT-FOR")
+        .setCheck(['event', Array])
+        .appendTitle("wait-for=");
+    this.appendValueInput("BLOCK")
+        .setCheck(['event', Array])
+        .appendTitle("block=");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('Synchronize with all other b-threads and post own decleratios.');
+  }
+};

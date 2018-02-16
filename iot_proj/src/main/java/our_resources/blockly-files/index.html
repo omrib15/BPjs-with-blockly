@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <head>
+  <title>Blockly diagram editor</title>
   <script src="https://blockly-demo.appspot.com/static/blockly_compressed.js"></script>
   <script src="https://blockly-demo.appspot.com/static/blocks_compressed.js"></script>
   <script src="https://blockly-demo.appspot.com/static/msg/js/en.js"></script>
   <script src="https://blockly-demo.appspot.com/static/javascript_compressed.js"></script>
   <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
   <script src="acorn_interpreter.js"></script>
+    <script src="our_blocks.js"></script>
+
   <link href="blockly-style.css" rel="stylesheet">
 </head>
 <body>
@@ -331,6 +334,24 @@
     <sep></sep>
     <category id="catVariables" colour="330" custom="VARIABLE" name="Variables"></category>
     <category id="catFunctions" colour="290" custom="PROCEDURE" name="Functions"></category>
+	<sep></sep>
+	<category  id="catBP" name="BP" colour="0">
+		<label text="Use the following block:" web-class="explanatoryBPLabelStyle"></label>
+		<block type="bp_event">
+		  <value name="TEXT">
+		     <shadow type="text">
+				<field name="TEXT">Your event name here..</field>
+			 </shadow>
+        </value>
+		</block>
+		<sep gap="20"></sep>
+		<label id="2nd-label" text="As the input to the following blocks' wait/request/block fields:" web-class="explanatoryBPLabelStyle"></label>
+		<!-- <label text=<script>get2ndLabelText()</script> web-class="explanatoryBPLabelStyle"></label> -->
+		<sep gap="20"></sep>
+
+		<label text="And then plug it in the following block:" web-class="explanatoryBPLabelStyle"></label>
+
+    </category>
   </xml>
 <xml id="blocklyDefault" style="display: none">
   <block type="variables_set">
@@ -392,7 +413,8 @@
 </xml>
 <script>
   var workspace = Blockly.inject('blocklyDiv',
-      {toolbox: document.getElementById('toolbox')});
+      {media: 'media/',
+	  toolbox: document.getElementById('toolbox')});
   var defaultBlocks = document.getElementById('blocklyDefault');
   Blockly.Xml.domToWorkspace(defaultBlocks, workspace);
   function myUpdateFunction(event) {
@@ -407,32 +429,53 @@
     PR.prettyPrint();
   }
   workspace.addChangeListener(myUpdateFunction);
-  function executeBlockCode() {
-    var code = Blockly.JavaScript.workspaceToCode(workspace);
-    var initFunc = function(interpreter, scope) {
-      var alertWrapper = function(text) {
-        text = text ? text.toString() : '';
-        return interpreter.createPrimitive(alert(text));
-      };
-      interpreter.setProperty(scope, 'alert',
-          interpreter.createNativeFunction(alertWrapper));
-      var promptWrapper = function(text) {
-        text = text ? text.toString() : '';
-        return interpreter.createPrimitive(prompt(text));
-      };
-      interpreter.setProperty(scope, 'prompt',
-          interpreter.createNativeFunction(promptWrapper));
-    };
-    var myInterpreter = new Interpreter(code, initFunc);
-    var stepsAllowed = 10000;
-    while (myInterpreter.step() && stepsAllowed) {
-      stepsAllowed--;
-    }
-    if (!stepsAllowed) {
-      throw EvalError('Infinite loop.');
-    }
+//function executeBlockCode() {
+//  var code = Blockly.JavaScript.workspaceToCode(workspace);
+//  var initFunc = function(interpreter, scope) {
+//    var alertWrapper = function(text) {
+//      text = text ? text.toString() : '';
+//      return interpreter.createPrimitive(alert(text));
+//    };
+//    interpreter.setProperty(scope, 'alert',
+//        interpreter.createNativeFunction(alertWrapper));
+//    var promptWrapper = function(text) {
+//      text = text ? text.toString() : '';
+//      return interpreter.createPrimitive(prompt(text));
+//    };
+//    interpreter.setProperty(scope, 'prompt',
+//        interpreter.createNativeFunction(promptWrapper));
+//  };
+//  var myInterpreter = new Interpreter(code, initFunc);
+//  var stepsAllowed = 10000;
+//  while (myInterpreter.step() && stepsAllowed) {
+//    stepsAllowed--;
+//  }
+//  if (!stepsAllowed) {
+//    throw EvalError('Infinite loop.');
+//  }
+//}
+  
+  function set2ndLabelText() {
+	 var text =  "<span style=\"color: blue\">wait</span>/<span style=\"color: green>request</span>/<span style=\"color: red\">block</span>"
+
+	 document.getElementById("2nd-label").setAttribute("text", text);
   }
   
-  <!-- document.getElementById('playButton').addEventListener('click', executeBlockCode); -->
-</script>
+  // document.getElementById('playButton').addEventListener('click', executeBlockCode);
+	//var text =  "<span style=\"color: blue\">wait</span>/<span style=\"color: green>request</span>/<span style=\"color: red\">block</span>"
+
+	//document.getElementById("2nd-label").setAttribute("text", text);
+  </script>
+
+
 </body>
+
+<style>
+	.explanatoryBPLabelStyle>.blocklyFlyoutLabelText {
+	fill: purple;
+	font-family: "verdana";
+    font-weight: bold;
+	font-size: 16px;
+
+}
+</style>
