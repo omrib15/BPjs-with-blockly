@@ -19,7 +19,7 @@ Blockly.defineBlocksWithJsonArray([
     "args0": [
       {
         "type": "input_value",
-        "name": "TEXT",
+        "name": "NAME",
         "check": "String"
       }
     ],
@@ -27,25 +27,60 @@ Blockly.defineBlocksWithJsonArray([
     "colour": "0",
     "tooltip": "A BP Event"
   },
+  
+  
+  {
+  "type": "bp_bsync",
+  "message0": "Wait %1 Request %2 Block %3",
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "WAIT",
+      "check": "[BP_EVENT,BP_EVENT_LIST]"
+    },
+    {
+      "type": "input_value",
+      "name": "REQUEST",
+      "check": "[BP_EVENT,BP_EVENT_LIST]"
+    },
+    {
+      "type": "input_value",
+      "name": "BLOCK",
+      "check": "[BP_EVENT,BP_EVENT_LIST]"
+    }
+  ],
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 0,
+  "tooltip": "A single bsync statement",
+  "helpUrl": ""
+}
   ])
   
-  Blockly.Blocks['bp_bsync'] = {
-  init: function() {
-    this.setColour(290);
-    this.appendDummyInput()
-        .appendTitle("sync");
-    this.appendValueInput("REQUEST")
-        .setCheck(['event', Array])
-        .appendTitle("requested=");
-    this.appendValueInput("WAIT-FOR")
-        .setCheck(['event', Array])
-        .appendTitle("wait-for=");
-    this.appendValueInput("BLOCK")
-        .setCheck(['event', Array])
-        .appendTitle("block=");
-    this.setInputsInline(true);
-    this.setPreviousStatement(true);
-    this.setNextStatement(true);
-    this.setTooltip('Synchronize with all other b-threads and post own decleratios.');
-  }
+  Blockly.JavaScript['text_indexOf'] = function(block) {
+  // Search the text for a substring.
+  var operator = block.getFieldValue('END') == 'FIRST' ? 'indexOf' : 'lastIndexOf';
+  var subString = Blockly.JavaScript.valueToCode(block, 'FIND',
+      Blockly.JavaScript.ORDER_NONE) || '\'\'';
+  var text = Blockly.JavaScript.valueToCode(block, 'VALUE',
+      Blockly.JavaScript.ORDER_MEMBER) || '\'\'';
+  var code = text + '.' + operator + '(' + subString + ')';
+  return [code, Blockly.JavaScript.ORDER_MEMBER];
+};
+  
+  
+  Blockly.JavaScript['bp_event'] = function(block) {
+  var event_name = block.getFieldValue('END') == 'FIRST' ? 'indexOf' : 'lastIndexOf';
+  var value_name = Blockly.JavaScript.valueToCode(block, 'NAME', Blockly.JavaScript.ORDER_ATOMIC);
+  var code = '...;\n';
+  return code;
+};
+  
+ Blockly.JavaScript['bp_bsync'] = function(block) {
+  var value_wait = Blockly.JavaScript.valueToCode(block, 'WAIT', Blockly.JavaScript.ORDER_ATOMIC);
+  var value_request = Blockly.JavaScript.valueToCode(block, 'REQUEST', Blockly.JavaScript.ORDER_ATOMIC);
+  var value_block = Blockly.JavaScript.valueToCode(block, 'BLOCK', Blockly.JavaScript.ORDER_ATOMIC);
+  // TODO: Assemble JavaScript into code variable.
+  var code = '...;\n';
+  return code;
 };
