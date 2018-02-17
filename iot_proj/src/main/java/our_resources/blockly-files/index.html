@@ -336,19 +336,33 @@
     <category id="catFunctions" colour="290" custom="PROCEDURE" name="Functions"></category>
 	<sep></sep>
 	<category  id="catBP" name="BP" colour="0">
-		<label text="Use the following block:" web-class="explanatoryBPLabelStyle"></label>
+		<label text="Plug the following blocks:" web-class="explanatoryBPLabelStyle"></label>
 		<block type="bp_event">
-		  <value name="TEXT">
+		  <value name="NAME">
 		     <shadow type="text">
 				<field name="TEXT">Your event name here..</field>
 			 </shadow>
         </value>
 		</block>
+		
+		<!-- <block type="bp_event_of_list">
+		  <value name="NAME">
+		     <shadow type="text">
+				<field name="TEXT">Your event name here..</field>
+			 </shadow>
+        </value>
+		</block -->>
+		
+		<block type="bp_event_list"></block>
+		
+		
 		<sep gap="20"></sep>
-		<label id="2nd-label" text="As the input to the following blocks' wait/request/block fields:" web-class="explanatoryBPLabelStyle"></label>
+		<label id="2nd-label" text="To the following blocks' wait/request/block fields:" web-class="explanatoryBPLabelStyle"></label>
 		<!-- <label text=<script>get2ndLabelText()</script> web-class="explanatoryBPLabelStyle"></label> -->
 		<sep gap="20"></sep>
-		
+		<block type="bp_bsync"></block>
+		<block type="bp_bsync_with_output"></block>
+
 		<label text="And then plug it in the following block:" web-class="explanatoryBPLabelStyle"></label>
 
     </category>
