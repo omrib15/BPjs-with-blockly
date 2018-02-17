@@ -23,13 +23,16 @@ public class MainFrameFuncs {
 	public void runBprog(String path) throws InterruptedException{
 		//running 
 		BProgram bprog = new SingleResourceBProgram(path);
+		//bprog.setDaemonMode(true);
+		
 		BProgramRunner runner = new BProgramRunner(bprog);
-		runner.addListener(new PrintBProgramRunnerListener());
+		
 		CustomBProgramRunnerListener eventLogger = new CustomBProgramRunnerListener(logStream);
+	
 		runner.addListener(eventLogger);
-      
+		
 			runner.start();
-                        
+		
                
 	}
 	
@@ -43,12 +46,12 @@ public class MainFrameFuncs {
 	}
 
 		//shows the main frame
-        public static void showFrame(JFrame frame){
+    public static void showFrame(JFrame frame){
     	java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                frame.setVisible(true);
-            }
-        });
+    		public void run() {
+    			frame.setVisible(true);
+    		}
+    	});
     }
 
 }
