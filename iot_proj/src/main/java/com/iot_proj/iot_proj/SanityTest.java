@@ -89,7 +89,7 @@ public class SanityTest
 								String coord[] = loc.split(",");
 								int col = Integer.parseInt(coord[0]);
 								int row = Integer.parseInt(coord[1]);
-								maze[row][col] = '•';
+								maze[row][col] = '*';
 							}
 						}
 					}
