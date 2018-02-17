@@ -4,11 +4,13 @@
  * and open the template in the editor.
  */
 package com.iot_proj.iot_proj.gui;
-import com.iot_proj.iot_proj.SanityTest;
+
 import java.io.File;
+import java.io.PrintStream;
+
 import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
-import javax.swing.JLabel;
+
+
 
 /**
  *
@@ -16,12 +18,15 @@ import javax.swing.JLabel;
  */
 public class MainFrame extends javax.swing.JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private MainFrameFuncs funcs;
-    private final JFileChooser fc;
     private String javaFolderAbsPath;
 	private final String relPathJsFolder;
     private String currFileName; 
-   
+  
 
 	public String getJavaFolderAbsPath() {
 		return javaFolderAbsPath;
@@ -63,15 +68,14 @@ public class MainFrame extends javax.swing.JFrame {
 	//the empty constructor
 	public MainFrame() {
         initComponents();
-        this.funcs = new MainFrameFuncs();
+        this.funcs = new MainFrameFuncs(logTextArea);
         this.javaFolderAbsPath = System.getProperty("user.dir") + "/src/main/java/";
         System.out.println(javaFolderAbsPath);
         this.relPathJsFolder = "our_resources/examples/";
-        this.fc = new JFileChooser(javaFolderAbsPath + relPathJsFolder);
         this.currFileName = "";
-     
-        //create the file list
         
+        
+        //update the file list
         updateFileList();
         
         }
@@ -91,7 +95,7 @@ public class MainFrame extends javax.swing.JFrame {
         fileList = new javax.swing.JComboBox<>();
         createButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        logTextArea = new javax.swing.JTextArea();
         logLabel = new javax.swing.JLabel();
         eventLabel = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -126,10 +130,10 @@ public class MainFrame extends javax.swing.JFrame {
 
         createButton.setText("Create");
 
-        jTextArea1.setEditable(false);
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        logTextArea.setEditable(false);
+        logTextArea.setColumns(20);
+        logTextArea.setRows(5);
+        jScrollPane1.setViewportView(logTextArea);
 
         logLabel.setText("Log");
 
@@ -152,23 +156,25 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(eventLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(60, 60, 60))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(60, 60, 60))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(logLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(127, 127, 127))))
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(logLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(131, 131, 131)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(47, 47, 47)
-                            .addComponent(fileList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(runButton)
-                            .addGap(18, 18, 18)
-                            .addComponent(createButton))))
-                .addContainerGap(162, Short.MAX_VALUE))
+                .addGap(47, 47, 47)
+                .addComponent(fileList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(runButton)
+                .addGap(18, 18, 18)
+                .addComponent(createButton)
+                .addContainerGap(416, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(146, 146, 146))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -203,9 +209,7 @@ public class MainFrame extends javax.swing.JFrame {
         setCurrFileName(fileName);
     }//GEN-LAST:event_fileListActionPerformed
     
-    private void updateLabel(JLabel label, String text){
-        label.setText(text);
-    }
+    
     
    /* private void chooseButtonActionPerformed(java.awt.event.ActionEvent evt) {                                             
     		//open the dialog box
@@ -281,8 +285,8 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel logLabel;
+    private javax.swing.JTextArea logTextArea;
     private javax.swing.JButton runButton;
     // End of variables declaration//GEN-END:variables
 }
