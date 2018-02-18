@@ -2,6 +2,7 @@ package com.iot_proj.iot_proj;
 
 import com.iot_proj.iot_proj.gui.MainFrame;
 import com.iot_proj.iot_proj.gui.MainFrameFuncs;
+import com.iot_proj.iot_proj.blocklyeditor.BlocklyRunner;;
 
 public class App 
 {
@@ -9,8 +10,10 @@ public class App
     public static void main( String[] args )
     {
     	MainFrame mainFrame = new MainFrame();
-    	
+    
         MainFrameFuncs.showFrame(mainFrame);
+        
+        
     }
     
     
