@@ -8,6 +8,7 @@
   <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
   <script src="acorn_interpreter.js"></script>
   <script src="our_blocks.js"></script>
+  <script src="FileSaver.js"></script>
 
   <link href="blockly-style.css" rel="stylesheet">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -18,16 +19,21 @@
 <div class="app-container">
 
 
-  <div id="blocklyDiv" style="width: 600px; height: 868px;" class="main blockly-panel"></div>
+  <div id="blocklyDiv" style="width: 1000px; height: 868px;" class="main blockly-panel"></div>
   <div id="buttons">
 	<button id="save_project_btn" type="button" class="btn btn-warning" style="position: absolute; left: 9px; bottom: 9px;" 
-	onclick="save_project()">Save Project As..</button>
+	onclick="save_project()" title="Save your project">Save Project As..</button>
 	
-	<button id="load_project_btn" type="button" class="btn btn-warning" style="position: absolute; left: 147px; bottom: 9px;" 
-	onclick="load_project()">Load Project</button>
+	<button id="load_project_btn" type="button" class="btn btn-warning" style="position: absolute; left: 247px; bottom: 9px;" 
+	onclick="input_click()" title="Load existing project">Load Project</button>
+	<input type="file" id="project_file" accept='.xml' style="display: none; position: absolute; left: 247px; bottom: 9px;"/>
+
 	
 	<button id="export_code_btn" type="button" class="btn btn-success" style="position: absolute; left: 515px; bottom: 9px;" 
-	onclick="export_code()">Export code</button>
+	onclick="export_code()" title="Export your code">Export code</button>
+	
+	<!-- <button id="load_project_btn" type="button href="#" onclick="performClick();" style="position: absolute; left: 247px; bottom: 9px;"></a> -->
+	
 	
 	</div>
   <div id="codeDiv" class="main output-panel">
@@ -361,13 +367,13 @@
         </value>
 		</block>
 		
-		<!-- <block type="bp_event_of_list">
+		<block type="bp_event_of_list">
 		  <value name="NAME">
 		     <shadow type="text">
 				<field name="TEXT">Your event name here..</field>
 			 </shadow>
         </value>
-		</block -->>
+		</block>
 		
 		<block type="bp_event_list"></block>
 		
@@ -459,31 +465,7 @@
     PR.prettyPrint();
   }
   workspace.addChangeListener(myUpdateFunction);
-//function executeBlockCode() {
-//  var code = Blockly.JavaScript.workspaceToCode(workspace);
-//  var initFunc = function(interpreter, scope) {
-//    var alertWrapper = function(text) {
-//      text = text ? text.toString() : '';
-//      return interpreter.createPrimitive(alert(text));
-//    };
-//    interpreter.setProperty(scope, 'alert',
-//        interpreter.createNativeFunction(alertWrapper));
-//    var promptWrapper = function(text) {
-//      text = text ? text.toString() : '';
-//      return interpreter.createPrimitive(prompt(text));
-//    };
-//    interpreter.setProperty(scope, 'prompt',
-//        interpreter.createNativeFunction(promptWrapper));
-//  };
-//  var myInterpreter = new Interpreter(code, initFunc);
-//  var stepsAllowed = 10000;
-//  while (myInterpreter.step() && stepsAllowed) {
-//    stepsAllowed--;
-//  }
-//  if (!stepsAllowed) {
-//    throw EvalError('Infinite loop.');
-//  }
-//}
+
   
   function set2ndLabelText() {
 	 var text =  "<span style=\"color: blue\">wait</span>/<span style=\"color: green>request</span>/<span style=\"color: red\">block</span>"
@@ -496,6 +478,8 @@
 
 	//document.getElementById("2nd-label").setAttribute("text", text);
   </script>
+  
+  <script src="listeners.js"></script>
 
 
 </body>
