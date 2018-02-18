@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Blockly diagram editor</title>
+  <script src="blockly_compressed.js"></script>
+  <script src="blocks_compressed.js"></script>
+  <script src="https://blockly-demo.appspot.com/static/javascript_compressed.js"></script>
+  <script src="en.js"></script>
+  <script src="our_blocks.js"></script>
+ 
+  
+  
+  <link href="/blockly/styles/blockly-demo.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/google/code-prettify/master/loader/prettify.css">
+</head>
+<body>
+
+  <div id="blocklyDiv" style="height: 800px; width: 800px;"></div>
+
+  </div>
+ </div>
+
+  
+ 
+	<sep></sep>
+	<category  id="catBP" name="BP" colour="60">
+		<label text="Use the following block:" web-class="explanatoryBPLabelStyle"></label>
+		<block type="bp_event">
+		  <value name="TEXT">
+		     <shadow type="text">
+				<field name="TEXT">Your event name here..</field>
+			 </shadow>
+        </value>
+		</block>
+		<sep gap="20"></sep>
+		<label text="As the input to the following blocks' wait/request/block fields:" web-class="explanatoryBPLabelStyle"></label>
+
+		<sep gap="20"></sep>
+
+		<label text="And then plug it in the following block:" web-class="explanatoryBPLabelStyle"></label>
+
+    </category>
+  </xml>
+
+ <style>
+	.explanatoryBPLabelStyle>.blocklyFlyoutLabelText {
+	fill: green;
+}
+</style>
+
+  <script>
+    var workspacePlayground = Blockly.inject('blocklyDiv',
+        {media: 'media/',
+         toolbox: document.getElementById('toolbox')});
+  </script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
