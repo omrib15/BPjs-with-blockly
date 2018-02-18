@@ -63,7 +63,7 @@ Blockly.defineBlocksWithJsonArray([
       "check": "BP_EVENT"
     }
   ],
-  "output": "BP_EVENT_LIST",
+  "output": ["BP_EVENT_LIST","Array"],
   "colour": 5,
   "tooltip": "A list of BP Events",
   "helpUrl": ""
@@ -147,23 +147,34 @@ Blockly.defineBlocksWithJsonArray([
   
   Blockly.JavaScript['bp_event_list'] = function(block) {
   var events_string = Blockly.JavaScript.valueToCode(block, 'LIST');
-  console.log(events_string);
+  //console.log(events_string);
   events = breakEventsString(events_string);
+  //console.log(events)
   var code = '';
   events.forEach(function(entry){
-	code+=entry+',';
+	code+=entry+',\n';
   });
-  code=code.substring(0,code.length-1);
+  code=code.substring(0,code.length-2);
+  code = '['+code+']';
   return [code, Blockly.JavaScript.ORDER_ATOMIC]};
   
   var breakEventsString = function(events_string){
+	result = [];
 	split = events_string.split('bp.Event');
-	result = []
+	//console.log(split)
 	split.forEach(function(entry){
-	if(entry.startsWith('(') && entry.endsWith(')'))
-		result.push('bp.Event'+entry)
-	});
-
+		if(entry.startsWith('(')){
+			new_entry = entry;
+			while(true)
+				if(new_entry.endsWith(',0')){
+					new_entry = new_entry.substring(0,new_entry.length-2);
+				}
+				else
+					break;
+			//console.log(new_entry);	
+			result.push('bp.Event'+new_entry);
+	}}); 
+	
 	return result
   };
   

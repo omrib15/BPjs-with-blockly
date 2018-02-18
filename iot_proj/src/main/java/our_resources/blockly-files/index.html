@@ -7,13 +7,29 @@
   <script src="https://blockly-demo.appspot.com/static/javascript_compressed.js"></script>
   <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
   <script src="acorn_interpreter.js"></script>
-    <script src="our_blocks.js"></script>
+  <script src="our_blocks.js"></script>
 
   <link href="blockly-style.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
 </head>
 <body>
+
 <div class="app-container">
-  <div id="blocklyDiv" class="main blockly-panel"></div>
+
+
+  <div id="blocklyDiv" style="width: 600px; height: 868px;" class="main blockly-panel"></div>
+  <div id="buttons">
+	<button id="save_project_btn" type="button" class="btn btn-warning" style="position: absolute; left: 9px; bottom: 9px;" 
+	onclick="save_project()">Save Project As..</button>
+	
+	<button id="load_project_btn" type="button" class="btn btn-warning" style="position: absolute; left: 147px; bottom: 9px;" 
+	onclick="load_project()">Load Project</button>
+	
+	<button id="export_code_btn" type="button" class="btn btn-success" style="position: absolute; left: 515px; bottom: 9px;" 
+	onclick="export_code()">Export code</button>
+	
+	</div>
   <div id="codeDiv" class="main output-panel">
    <!--  <div class="dropdown-bar">
       Language:
