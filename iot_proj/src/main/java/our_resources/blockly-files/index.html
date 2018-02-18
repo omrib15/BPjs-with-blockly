@@ -8,6 +8,7 @@
   <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
   <script src="acorn_interpreter.js"></script>
   <script src="our_blocks.js"></script>
+  <script src="FileSaver.js"></script>
 
   <link href="blockly-style.css" rel="stylesheet">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -18,16 +19,21 @@
 <div class="app-container">
 
 
-  <div id="blocklyDiv" style="width: 600px; height: 868px;" class="main blockly-panel"></div>
+  <div id="blocklyDiv" style="width: 1000px; height: 868px;" class="main blockly-panel"></div>
   <div id="buttons">
 	<button id="save_project_btn" type="button" class="btn btn-warning" style="position: absolute; left: 9px; bottom: 9px;" 
 	onclick="save_project()">Save Project As..</button>
 	
-	<button id="load_project_btn" type="button" class="btn btn-warning" style="position: absolute; left: 147px; bottom: 9px;" 
-	onclick="load_project()">Load Project</button>
+	<button id="load_project_btn" type="button" class="btn btn-warning" style="position: absolute; left: 247px; bottom: 9px;" 
+	onclick="input_click()">Load Project</button>
+	<input type="file" id="project_file" accept='.xml' style="display: none; position: absolute; left: 247px; bottom: 9px;"/>
+
 	
 	<button id="export_code_btn" type="button" class="btn btn-success" style="position: absolute; left: 515px; bottom: 9px;" 
 	onclick="export_code()">Export code</button>
+	
+	<!-- <button id="load_project_btn" type="button href="#" onclick="performClick();" style="position: absolute; left: 247px; bottom: 9px;"></a> -->
+	
 	
 	</div>
   <div id="codeDiv" class="main output-panel">
@@ -496,6 +502,8 @@
 
 	//document.getElementById("2nd-label").setAttribute("text", text);
   </script>
+  
+  <script src="listeners.js"></script>
 
 
 </body>
