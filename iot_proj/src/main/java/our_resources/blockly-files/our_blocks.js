@@ -23,14 +23,12 @@ Blockly.defineBlocksWithJsonArray([
       }
     ],
 	"inputsInline": true,
-    "previousStatement": null,
     "output" : "BP_EVENT",
-    "nextStatement": "BP_EVENT", 
 	"colour": 0,
     "tooltip": "A BP Event"
   },
   
-/*   {
+  {
   "type": "bp_event_of_list",
   "message0": "BP Event %1",
   "args0": [
@@ -42,13 +40,12 @@ Blockly.defineBlocksWithJsonArray([
   ],
   "inputsInline": true,
   "previousStatement": null,
-  "output" : "BP_EVENT",
   "nextStatement": "BP_EVENT",
   "colour": 0,
-  "tooltip": "Use this block if you are manually defining a list of BP Events",
+  "tooltip": "Use this block if you are using the list of BP Events block",
   "helpUrl": ""
 },
-  */
+ 
   
   {
   "type": "bp_event_list",
@@ -122,17 +119,6 @@ Blockly.defineBlocksWithJsonArray([
 }
   ])
   
-  Blockly.JavaScript['text_indexOf'] = function(block) {
-  // Search the text for a substring.
-  var operator = block.getFieldValue('END') == 'FIRST' ? 'indexOf' : 'lastIndexOf';
-  var subString = Blockly.JavaScript.valueToCode(block, 'FIND',
-      Blockly.JavaScript.ORDER_NONE) || '\'\'';
-  var text = Blockly.JavaScript.valueToCode(block, 'VALUE',
-      Blockly.JavaScript.ORDER_MEMBER) || '\'\'';
-  var code = text + '.' + operator + '(' + subString + ')';
-  return [code, Blockly.JavaScript.ORDER_MEMBER];
-};
-  
   
   Blockly.JavaScript['bp_event'] = function(block) {
   var event_name = Blockly.JavaScript.valueToCode(block, 'NAME', Blockly.JavaScript.ORDER_ATOMIC);
@@ -141,7 +127,7 @@ Blockly.defineBlocksWithJsonArray([
   var code = 'bp.Event('+event_name+')';
   return [code, Blockly.JavaScript.ORDER_ATOMIC]};
   
-  Blockly.JavaScript['bp_event_of_list'] =  Blockly.JavaScript['bp_event']
+  //Blockly.JavaScript['bp_event_of_list'] =  Blockly.JavaScript['bp_event']
   
   
   
@@ -183,8 +169,11 @@ Blockly.defineBlocksWithJsonArray([
   var value_request = Blockly.JavaScript.valueToCode(block, 'REQUEST', Blockly.JavaScript.ORDER_ATOMIC) || 'null';
   var value_block = Blockly.JavaScript.valueToCode(block, 'BLOCK', Blockly.JavaScript.ORDER_ATOMIC) || 'null';
 
-  var code = 'bsync({waitFor: '+value_wait+',request: '+value_request+',block: '+value_block+'});';
-  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+  
+  var code = 'bsync({waitFor: '+value_wait+',request: '+value_request+',block: '+value_block+'});\n';
+  //code='bp.log.info(found: '+value_wait+');\n'+code;
+  return code;
+  //return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
-Blockly.JavaScript['bp_bsync_with_output'] = Blockly.JavaScript['bp_bsync'] //same generation
+//Blockly.JavaScript['bp_bsync_with_output'] = Blockly.JavaScript['bp_bsync'] //same generation

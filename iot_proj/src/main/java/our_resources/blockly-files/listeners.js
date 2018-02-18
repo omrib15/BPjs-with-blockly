@@ -27,43 +27,19 @@ function load_project(event){
 	 var reader = new FileReader();
      reader.onload = function(){
 		var xml_text = reader.result;
-		console.log(reader.result.substring(0, 200));
+		//console.log(reader.result.substring(0, 200));
 		//Blockly.mainWorkspace.clear()
 		workspace.clear();
 		var xml = Blockly.Xml.textToDom(xml_text);
 		Blockly.Xml.domToWorkspace(xml, workspace);
         };
      reader.readAsText(current_file);
-
+	 //current_file.close();
 }
 
 
+function export_code() {
+    var code = Blockly.JavaScript.workspaceToCode(workspace);
+    saveTextAs(code, "program.js");
 
-
-
-// fetch('file.txt')
-  // .then(response => response.text())
-  // .then(text => console.log(text))
-
-function readTextFile(file)
-{
-    var rawFile = new XMLHttpRequest();
-    rawFile.open("GET", file, false);
-    rawFile.onreadystatechange = function ()
-    {
-        if(rawFile.readyState === 4)
-        {
-            if(rawFile.status === 200 || rawFile.status == 0)
-            {
-                var allText = rawFile.responseText;
-                alert(allText);
-            }
-        }
-    }
-    rawFile.send(null);
-}
-
-
-function export_code(){
-	
-}
+  }
