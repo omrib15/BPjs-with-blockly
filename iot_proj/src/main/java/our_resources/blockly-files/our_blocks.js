@@ -74,7 +74,7 @@ Blockly.defineBlocksWithJsonArray([
     {
       "type": "input_value",
       "name": "WAIT",
-      "check": ["BP_EVENT","BP_EVENT_LIST"]
+      "check": ["BP_EVENT","BP_EVENT_LIST","Array"]
     },
     {
       "type": "input_value",
@@ -84,7 +84,7 @@ Blockly.defineBlocksWithJsonArray([
     {
       "type": "input_value",
       "name": "BLOCK",
-      "check": ["BP_EVENT","BP_EVENT_LIST"]
+      "check": ["BP_EVENT","BP_EVENT_LIST","Array"]
     }
   ],
   "previousStatement": null,
@@ -100,7 +100,7 @@ Blockly.defineBlocksWithJsonArray([
     {
       "type": "input_value",
       "name": "WAIT",
-      "check": ["BP_EVENT","BP_EVENT_LIST"]
+      "check": ["BP_EVENT","BP_EVENT_LIST","Array"]
     },
     {
       "type": "input_value",
@@ -110,7 +110,7 @@ Blockly.defineBlocksWithJsonArray([
     {
       "type": "input_value",
       "name": "BLOCK",
-      "check": ["BP_EVENT","BP_EVENT_LIST"]
+      "check": ["BP_EVENT","BP_EVENT_LIST","Array"]
     }
   ],
   "output":"BP_EVENT",
@@ -118,6 +118,25 @@ Blockly.defineBlocksWithJsonArray([
   "tooltip": "Use this block if you would like to utilize the value returned by the bsync",
   "helpUrl": ""
 },
+
+{
+  "type": "bp_register_bthread",
+  "message0": "BThread %1 %2",
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "NAME"
+    },
+    {
+      "type": "input_statement",
+      "name": "CONTENT"
+    }
+  ],
+  "inputsInline": true,
+  "colour": 55,
+  "tooltip": "A single BThread",
+  "helpUrl": ""
+}
 
   ])
   
@@ -170,11 +189,38 @@ Blockly.defineBlocksWithJsonArray([
   var value_wait = Blockly.JavaScript.valueToCode(block, 'WAIT', Blockly.JavaScript.ORDER_ATOMIC) || 'null';
   var value_request = Blockly.JavaScript.valueToCode(block, 'REQUEST', Blockly.JavaScript.ORDER_ATOMIC) || 'null';
   var value_block = Blockly.JavaScript.valueToCode(block, 'BLOCK', Blockly.JavaScript.ORDER_ATOMIC) || 'null';
-
+	
+  code = '';
   
-  var code = 'bsync({waitFor: '+value_wait+',request: '+value_request+',block: '+value_block+'});\n';
-  //code='bp.log.info(found: '+value_wait+');\n'+code;
-  return code;
+  //make the code prettier by not showing null values
+  if (value_wait == 'null' && value_request != 'null' && value_block != 'null')
+	  code = 'bsync({request: '+value_request+',\nblock: '+value_block+'})';
+  
+  if (value_wait != 'null' && value_request == 'null' && value_block != 'null')
+	  code = 'bsync({waitFor: '+value_wait+',\nblock: '+value_block+'})';
+
+  if (value_wait != 'null' && value_request != 'null' && value_block == 'null')
+	  code = 'bsync({waitFor: '+value_wait+',\nrequest: '+value_request+'})';
+  
+  if (value_wait == 'null' && value_request == 'null' && value_block != 'null')
+	  code = 'bsync({block: '+value_block+'})';
+  
+  if (value_wait == 'null' && value_request != 'null' && value_block == 'null')
+	  code = 'bsync({request: '+value_request+'})';
+  
+  if (value_wait != 'null' && value_request == 'null' && value_block == 'null')
+	  code = 'bsync({waitFor: '+value_wait+'})';
+  
+  if (value_wait == 'null' && value_request == 'null' && value_block == 'null')
+	  code = 'bsync({})';
+  
+  if (value_wait != 'null' && value_request != 'null' && value_block != 'null')
+      code = 'bsync({waitFor: '+value_wait+',\nrequest: '+value_request+',\nblock: '+value_block+'})';
+  
+  
+  
+  //code='//Auto-generated code for dynamic event detection:\nbp.log.info(found: '+value_wait+');\n'+code;
+  return code+';\n';
   //return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
@@ -182,17 +228,44 @@ Blockly.JavaScript['bp_bsync_with_output'] = function(block) {
   var value_wait = Blockly.JavaScript.valueToCode(block, 'WAIT', Blockly.JavaScript.ORDER_ATOMIC) || 'null';
   var value_request = Blockly.JavaScript.valueToCode(block, 'REQUEST', Blockly.JavaScript.ORDER_ATOMIC) || 'null';
   var value_block = Blockly.JavaScript.valueToCode(block, 'BLOCK', Blockly.JavaScript.ORDER_ATOMIC) || 'null';
-
   
-  var code = 'bsync({waitFor: '+value_wait+',request: '+value_request+',block: '+value_block+'})';
-  //code='bp.log.info(found: '+value_wait+');\n'+code;
+  code = '';
+  
+  //make the code prettier by not showing null values
+  if (value_wait == 'null' && value_request != 'null' && value_block != 'null')
+	  code = 'bsync({request: '+value_request+',\nblock: '+value_block+'})';
+  
+  if (value_wait != 'null' && value_request == 'null' && value_block != 'null')
+	  code = 'bsync({waitFor: '+value_wait+',\nblock: '+value_block+'})';
+
+  if (value_wait != 'null' && value_request != 'null' && value_block == 'null')
+	  code = 'bsync({waitFor: '+value_wait+',\nrequest: '+value_request+'})';
+  
+  if (value_wait == 'null' && value_request == 'null' && value_block != 'null')
+	  code = 'bsync({block: '+value_block+'})';
+  
+  if (value_wait == 'null' && value_request != 'null' && value_block == 'null')
+	  code = 'bsync({request: '+value_request+'})';
+  
+  if (value_wait != 'null' && value_request == 'null' && value_block == 'null')
+	  code = 'bsync({waitFor: '+value_wait+'})';
+  
+  if (value_wait == 'null' && value_request == 'null' && value_block == 'null')
+	  code = 'bsync({})';
+  
+  if (value_wait != 'null' && value_request != 'null' && value_block != 'null')
+      code = 'bsync({waitFor: '+value_wait+',\nrequest: '+value_request+',\nblock: '+value_block+'})';
+  
+  
+  //code='//Auto-generated code for dynamic event detection:\nbp.log.info(found: '+value_wait+');\n'+code;
   //return code;
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
 Blockly.JavaScript['bp_register_bthread'] = function(block) {
-  var statements = Blockly.JavaScript.statementToCode(block, 'STATEMENT');
-  var code = 'bp.registerBThread(;\n';
+  var name = Blockly.JavaScript.valueToCode(block, 'NAME', Blockly.JavaScript.ORDER_ATOMIC);
+  var statements = Blockly.JavaScript.statementToCode(block, 'CONTENT');
+  var code = 'bp.registerBThread('+name+', function(){\n'+statements+'\n});\n';
   return code;
 };
 
