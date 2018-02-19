@@ -71,9 +71,8 @@ public class MainFrame extends javax.swing.JFrame {
 	//the empty constructor
 	public MainFrame() {
         initComponents();
-        this.funcs = new MainFrameFuncs(logTextArea);
+        this.funcs = new MainFrameFuncs(logTextArea,eventsList);
         this.javaFolderAbsPath = System.getProperty("user.dir") + "/src/main/java/";
-        System.out.println(javaFolderAbsPath);
         this.relPathJsFolder = "our_resources/examples/";
         this.currFileName = "";
         

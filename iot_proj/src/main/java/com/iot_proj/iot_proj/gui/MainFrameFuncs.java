@@ -5,6 +5,7 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 
 import javax.swing.JFrame;
+import javax.swing.JList;
 import javax.swing.JTextArea;
 
 import com.iot_proj.iot_proj.blocklyeditor.BlocklyRunner;
@@ -21,9 +22,11 @@ public class MainFrameFuncs {
 	private PrintStream logStream;
 	private Thread currentRunnerThread;
 	private BlocklyRunner blocklyRunner;
+	private PrintStream oldStream = System.out;
 	
-	public MainFrameFuncs(JTextArea logTextArea) {
-		this.logStream = new PrintStream(new CustomOutStream(logTextArea), true);
+	
+	public MainFrameFuncs(JTextArea logTextArea, JList<String> eventsList) {
+		this.logStream = new PrintStream(new EventOutStream(logTextArea, eventsList));
 		this.blocklyRunner = new BlocklyRunner();
 	}
 	
@@ -35,9 +38,10 @@ public class MainFrameFuncs {
 		
 		BProgramRunner runner = new BProgramRunner(bprog);
 		
+		System.setOut(logStream);
 		//my custom listener that prints logs to the appropriate text area
-		CustomBProgramRunnerListener eventLogger = new CustomBProgramRunnerListener(logStream);
-		
+		CustomBProgramRunnerListener eventLogger = new CustomBProgramRunnerListener();
+	
 		runner.addListener(eventLogger);
 		
 		//set the thread that starts the BProgramRunner
