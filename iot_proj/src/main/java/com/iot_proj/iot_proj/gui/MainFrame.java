@@ -5,11 +5,15 @@
  */
 package com.iot_proj.iot_proj.gui;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JComboBox;
+import javax.swing.ListSelectionModel;
 
 import com.iot_proj.iot_proj.blocklyeditor.BlocklyRunner;
 
@@ -28,7 +32,8 @@ public class MainFrame extends javax.swing.JFrame {
 	private MainFrameFuncs funcs;
     private String javaFolderAbsPath;
 	private final String relPathJsFolder;
-    private String currFileName; 
+    private String currFileName;
+    private DefaultListModel<String> eventsModel;
   
 
 	public String getJavaFolderAbsPath() {
@@ -67,15 +72,30 @@ public class MainFrame extends javax.swing.JFrame {
             }
         }
         
+        
+        private void setupEventsList(){
+        	this.eventsModel = new DefaultListModel<String>();
+        	this.eventsList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+            this.eventsList.setModel(eventsModel);
+            this.eventsList.addMouseListener(new MouseAdapter(){
+            	public void mouseClicked(MouseEvent e) {
+                    if (e.getClickCount() == 2) {
+                    	//enqueue the selected event
+                    	funcs.enqueueExternalEvent(eventsList.getSelectedValue());
+                    	eventsModel.removeElement(eventsList.getSelectedValue());
+                    }
+            	}});
+        }
 	
 	//the empty constructor
 	public MainFrame() {
         initComponents();
-        this.funcs = new MainFrameFuncs(logTextArea,eventsList);
+        setupEventsList();
+        this.funcs = new MainFrameFuncs(logTextArea,eventsModel);
         this.javaFolderAbsPath = System.getProperty("user.dir") + "/src/main/java/";
         this.relPathJsFolder = "our_resources/examples/";
         this.currFileName = "";
-        
+       
         
         //update the file list
         updateFileList();
@@ -228,26 +248,6 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_createButtonActionPerformed
     
     
-    
-   /* private void chooseButtonActionPerformed(java.awt.event.ActionEvent evt) {                                             
-    		//open the dialog box
-            int returnVal = fc.showOpenDialog(MainFrame.this);
-            
-            //check that the file selection succeeded  
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-            	File file = fc.getSelectedFile();
-                
-                System.out.println("Chosen file: " + file.getAbsolutePath());
-                
-                //update the chosen file's name
-                setCurrFileName(file.getName());
-                jLabel2.setText(getCurrFileName());
-                
-            } else {
-                System.out.println("Open command cancelled by user." );
-            }
-        }
-    */
 
     //click event listener for the run button
     private void runButtonActionPerformed(java.awt.event.ActionEvent evt) {                                          
@@ -261,6 +261,8 @@ public class MainFrame extends javax.swing.JFrame {
     			e.printStackTrace();
 			}
     	}
+    	
+    	
     	
     }
 

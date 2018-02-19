@@ -4,21 +4,23 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JTextArea;
 
 public class EventOutStream extends OutputStream {
 	private JTextArea textArea;
-	private JList eventsList;
 	private String accStr;
 	private final String found = "[BP][Info] found:";
 	private boolean begin;
+	private DefaultListModel<String> eventsModel;
 	
-    public EventOutStream(JTextArea textArea, JList<String> eventsList) {
+    public EventOutStream(JTextArea textArea, DefaultListModel<String> eventsModel) {
         this.textArea = textArea;
-        this.eventsList = eventsList;
         this.accStr = "" ;
         this.begin = false;
+        this.eventsModel = eventsModel;
+        
     }
     
     
@@ -49,11 +51,12 @@ public class EventOutStream extends OutputStream {
 			if(accStr.length() > found.length()){
 				if(accStr.contains(found)){
 					if(ch.equals("\n")){
-						textArea.append("fucking hell!: " + accStr.substring(found.length()));
+						//add the found event to the list of events
+						eventsModel.addElement(accStr.substring(found.length()+1,accStr.length()-2));
+						
 						begin = false;
 						accStr = "";
 					} 
-					
 				}
 				
 				//the accumulated string isn't the "found" message 
