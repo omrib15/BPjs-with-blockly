@@ -29,7 +29,7 @@
 	<input type="file" id="project_file" accept='.xml' style="display: none; position: absolute; left: 247px; bottom: 9px;"/>
 
 	
-	<button id="export_code_btn" type="button" class="btn btn-success" style="position: absolute; left: 515px; bottom: 9px;" 
+	<button id="export_code_btn" type="button" class="btn btn-success" style="position: absolute; right: 9px; bottom: 9px;" 
 	onclick="export_code()" title="Export your code">Export code</button>
 	
 	<!-- <button id="load_project_btn" type="button href="#" onclick="performClick();" style="position: absolute; left: 247px; bottom: 9px;"></a> -->
@@ -372,7 +372,7 @@
 		     <shadow type="text">
 				<field name="TEXT">Your event name here..</field>
 			 </shadow>
-        </value>
+		  </value>
 		</block>
 		
 		<block type="bp_event_list"></block>
@@ -386,10 +386,12 @@
 		<block type="bp_bsync_with_output"></block>
 
 		<label text="And then plug it in the following block:" web-class="explanatoryBPLabelStyle"></label>
+		<!--<block type="bp_register_bthread></block>-->
 
     </category>
   </xml>
-<xml id="blocklyDefault" style="display: none">
+ 
+ <xml id="blocklyDefault" style="display: none">
   <block type="variables_set">
     <field name="VAR">Count</field>
     <value name="VALUE">
@@ -445,8 +447,10 @@
           </block>
         </statement>
       </block>
-    </block>
+    </next>
+</block>
 </xml>
+
 <script>
   var workspace = Blockly.inject('blocklyDiv',
       {media: 'media/',

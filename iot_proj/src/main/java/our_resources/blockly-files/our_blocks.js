@@ -41,6 +41,7 @@ Blockly.defineBlocksWithJsonArray([
   "inputsInline": true,
   "previousStatement": null,
   "nextStatement": "BP_EVENT",
+  "output": "BP_EVENT",
   "colour": 0,
   "tooltip": "Use this block if you are using the list of BP Events block",
   "helpUrl": ""
@@ -61,7 +62,7 @@ Blockly.defineBlocksWithJsonArray([
     }
   ],
   "output": ["BP_EVENT_LIST","Array"],
-  "colour": 5,
+  "colour": 15,
   "tooltip": "A list of BP Events",
   "helpUrl": ""
 },
@@ -88,7 +89,7 @@ Blockly.defineBlocksWithJsonArray([
   ],
   "previousStatement": null,
   "nextStatement": null,
-  "colour": 5,
+  "colour": 27,
   "tooltip": "A single bsync statement",
   "helpUrl": ""
 },
@@ -113,10 +114,11 @@ Blockly.defineBlocksWithJsonArray([
     }
   ],
   "output":"BP_EVENT",
-  "colour": 5,
+  "colour": 27,
   "tooltip": "Use this block if you would like to utilize the value returned by the bsync",
   "helpUrl": ""
-}
+},
+
   ])
   
   
@@ -127,7 +129,7 @@ Blockly.defineBlocksWithJsonArray([
   var code = 'bp.Event('+event_name+')';
   return [code, Blockly.JavaScript.ORDER_ATOMIC]};
   
-  //Blockly.JavaScript['bp_event_of_list'] =  Blockly.JavaScript['bp_event']
+  Blockly.JavaScript['bp_event_of_list'] =  Blockly.JavaScript['bp_event']
   
   
   
@@ -176,4 +178,22 @@ Blockly.defineBlocksWithJsonArray([
   //return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
-//Blockly.JavaScript['bp_bsync_with_output'] = Blockly.JavaScript['bp_bsync'] //same generation
+Blockly.JavaScript['bp_bsync_with_output'] = function(block) {
+  var value_wait = Blockly.JavaScript.valueToCode(block, 'WAIT', Blockly.JavaScript.ORDER_ATOMIC) || 'null';
+  var value_request = Blockly.JavaScript.valueToCode(block, 'REQUEST', Blockly.JavaScript.ORDER_ATOMIC) || 'null';
+  var value_block = Blockly.JavaScript.valueToCode(block, 'BLOCK', Blockly.JavaScript.ORDER_ATOMIC) || 'null';
+
+  
+  var code = 'bsync({waitFor: '+value_wait+',request: '+value_request+',block: '+value_block+'})';
+  //code='bp.log.info(found: '+value_wait+');\n'+code;
+  //return code;
+  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+};
+
+Blockly.JavaScript['bp_register_bthread'] = function(block) {
+  var statements = Blockly.JavaScript.statementToCode(block, 'STATEMENT');
+  var code = 'bp.registerBThread(;\n';
+  return code;
+};
+
+//bp.registerBThread("starter(c:" + col + " r:" + row + ")", function () {
