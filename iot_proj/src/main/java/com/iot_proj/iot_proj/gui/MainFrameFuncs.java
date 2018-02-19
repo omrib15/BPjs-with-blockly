@@ -49,7 +49,7 @@ public class MainFrameFuncs {
 		
 		System.setOut(logStream);
 		//my custom listener that prints logs to the appropriate text area
-		CustomBProgramRunnerListener eventLogger = new CustomBProgramRunnerListener();
+		CustomBProgramRunnerListener eventLogger = new CustomBProgramRunnerListener(eventsModel);
 	
 		runner.addListener(eventLogger);
 		
@@ -67,8 +67,6 @@ public class MainFrameFuncs {
 		//start the thread
 		currentRunnerThread.start();
 		
-		
-               
 	}
 	
 	
