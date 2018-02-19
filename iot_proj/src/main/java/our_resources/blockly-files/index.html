@@ -18,7 +18,6 @@
 
 <div class="app-container">
 
-<!--style="width: 1000px; height: 868px;"-->
   <div id="blocklyDiv" style = "height: 820px;" class="main blockly-panel"></div>
   <div id="buttons">
 	<button id="save_project_btn" type="button" class="btn btn-warning" style="position: absolute; left: 9px; bottom: 9px;" 
@@ -29,30 +28,17 @@
 	<input type="file" id="project_file" accept='.xml' style="display: none; position: absolute; left: 247px; bottom: 9px;"/>
 
 	
-	<button id="export_code_btn" type="button" class="btn btn-success" style="position: absolute; left: 515px; bottom: 9px;" 
+	<button id="export_code_btn" type="button" class="btn btn-success" style="position: absolute; right: 367px; bottom: 9px;" 
 	onclick="export_code()" title="Export your code">Export code</button>
 	
-	<!-- <button id="load_project_btn" type="button href="#" onclick="performClick();" style="position: absolute; left: 247px; bottom: 9px;"></a> -->
 	
 	
 	</div>
   <div id="codeDiv" class="main output-panel">
-   <!--  <div class="dropdown-bar">
-      Language:
-      <div id="im-just-an-underline">
-        <select id="languageDropdown" onChange="myUpdateFunction();">
-          <option value="JavaScript">JavaScript</option>
-          <option value="Python">Python</option>
-          <option value="PHP">PHP</option>
-          <option value="Lua">Lua</option>
-          <option value="Dart">Dart</option>
-        </select>
-      </div>
-    </div> -->
-   <!--  <hr class="POps"> -->
+  
     <pre></pre>
+	
   </div>
-  <!-- <div id="playButton" class="play-button material-icons">play_arrow</div> -->
 </div>
 <xml id="toolbox" style="display: none">
     <category id="catLogic" colour="210" name="Logic">
@@ -372,7 +358,7 @@
 		     <shadow type="text">
 				<field name="TEXT">Your event name here..</field>
 			 </shadow>
-        </value>
+		  </value>
 		</block>
 		
 		<block type="bp_event_list"></block>
@@ -386,10 +372,18 @@
 		<block type="bp_bsync_with_output"></block>
 
 		<label text="And then plug it in the following block:" web-class="explanatoryBPLabelStyle"></label>
+		<block type="bp_register_bthread">
+		<value name="NAME">
+		     <shadow type="text">
+				<field name="TEXT">Your BThread name here..</field>
+			 </shadow>
+		  </value>
+		  </block>
 
     </category>
   </xml>
-<xml id="blocklyDefault" style="display: none">
+ 
+ <xml id="blocklyDefault" style="display: none">
   <block type="variables_set">
     <field name="VAR">Count</field>
     <value name="VALUE">
@@ -445,17 +439,23 @@
           </block>
         </statement>
       </block>
-    </block>
+    </next>
+</block>
 </xml>
+
+<xml id="ourDefault" style="display: none" xmlns="http://www.w3.org/1999/xhtml"><variables><variable type="" id="^NquueSC0#W,`NFU%~e%">Count</variable></variables><block type="bp_register_bthread" id="eqj]8}_vO?XFFu1|-M1_" x="38" y="23"><value name="NAME"><shadow type="text" id="NFX9A(kdldQ0H;0m#`du"><field name="TEXT">bt-world</field></shadow></value><statement name="CONTENT"><block type="bp_bsync" id="]!`XT_y-ql5(xECT]==-"><value name="WAIT"><block type="bp_event" id="ck[*z*cta]wB.[,ggF{k"><value name="NAME"><shadow type="text" id="is|Dxor9zmJiQXW@cgKA"><field name="TEXT">hello</field></shadow></value></block></value><next><block type="bp_bsync" id="l_8e3r1D=kipv@%7=FvJ"><value name="REQUEST"><block type="bp_event" id="K!@eRV~)yVgj#UhzJ--]"><value name="NAME"><shadow type="text" id="f$Obp?c5Sk4?NTI.1^Qn"><field name="TEXT">world</field></shadow></value></block></value></block></next></block></statement></block><block type="bp_register_bthread" id="UvJ/+e2W$(V=4.h:R!L#" x="45" y="260"><value name="NAME"><shadow type="text" id="L/5;au300}QO;?62QTMP"><field name="TEXT">bt-hello</field></shadow></value><statement name="CONTENT"><block type="bp_bsync" id="l:`$U0k!$}W@S4|d)~n%"><value name="REQUEST"><block type="bp_event" id="qJvgz|2JVge.CcDMx~^s"><value name="NAME"><shadow type="text" id="MAZRbO/PM(8*d-uqNFpi"><field name="TEXT">hello</field></shadow></value></block></value></block></statement></block></xml>
+
+
+
 <script>
   var workspace = Blockly.inject('blocklyDiv',
       {media: 'media/',
 	  toolbox: document.getElementById('toolbox')});
-  var defaultBlocks = document.getElementById('blocklyDefault');
+  //var defaultBlocks = document.getElementById('blocklyDefault');
+    var defaultBlocks = document.getElementById('ourDefault');
+
   Blockly.Xml.domToWorkspace(defaultBlocks, workspace);
   function myUpdateFunction(event) {
-<!--     var languageDropdown = document.getElementById('languageDropdown');
- -->    var languageSelection = languageDropdown.options[languageDropdown.selectedIndex].value;
     var codeDiv = document.getElementById('codeDiv');
     var codeHolder = document.createElement('pre');
     codeHolder.className = 'prettyprint but-not-that-pretty';
@@ -473,10 +473,6 @@
 	 document.getElementById("2nd-label").setAttribute("text", text);
   }
   
-  // document.getElementById('playButton').addEventListener('click', executeBlockCode);
-	//var text =  "<span style=\"color: blue\">wait</span>/<span style=\"color: green>request</span>/<span style=\"color: red\">block</span>"
-
-	//document.getElementById("2nd-label").setAttribute("text", text);
   </script>
   
   <script src="listeners.js"></script>

@@ -27,14 +27,11 @@ function load_project(event){
 	 var reader = new FileReader();
      reader.onload = function(){
 		var xml_text = reader.result;
-		//console.log(reader.result.substring(0, 200));
-		//Blockly.mainWorkspace.clear()
 		workspace.clear();
 		var xml = Blockly.Xml.textToDom(xml_text);
 		Blockly.Xml.domToWorkspace(xml, workspace);
         };
      reader.readAsText(current_file);
-	 //current_file.close();
 }
 
 
