@@ -1,16 +1,3 @@
-
-/*
-Blockly.Blocks['bp_event'] = {
-  init: function() {
-    this.appendValueInput('VALUE')
-        .setCheck('String')
-        .appendField('Event name');
-    this.setColour(150);
-    this.setTooltip('A BP Event');
-  }
-};
-*/
-
 Blockly.defineBlocksWithJsonArray([  
  {
     "type": "bp_event",
@@ -154,9 +141,7 @@ Blockly.defineBlocksWithJsonArray([
   
   Blockly.JavaScript['bp_event_list'] = function(block) {
   var events_string = Blockly.JavaScript.valueToCode(block, 'LIST');
-  //console.log(events_string);
   events = breakEventsString(events_string);
-  //console.log(events)
   var code = '';
   events.forEach(function(entry){
 	code+=entry+',\n';
@@ -168,7 +153,6 @@ Blockly.defineBlocksWithJsonArray([
   var breakEventsString = function(events_string){
 	result = [];
 	split = events_string.split('bp.Event');
-	//console.log(split)
 	split.forEach(function(entry){
 		if(entry.startsWith('(')){
 			new_entry = entry;
@@ -178,7 +162,6 @@ Blockly.defineBlocksWithJsonArray([
 				}
 				else
 					break;
-			//console.log(new_entry);	
 			result.push('bp.Event'+new_entry);
 	}}); 
 	
@@ -268,5 +251,3 @@ Blockly.JavaScript['bp_register_bthread'] = function(block) {
   var code = 'bp.registerBThread('+name+', function(){\n'+statements+'\n});\n';
   return code;
 };
-
-//bp.registerBThread("starter(c:" + col + " r:" + row + ")", function () {
