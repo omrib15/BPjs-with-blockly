@@ -23,9 +23,9 @@
 	<button id="save_project_btn" type="button" class="btn btn-warning" style="position: absolute; left: 9px; bottom: 9px;" 
 	onclick="save_project()" title="Save your project">Save Project As..</button>
 	
-	<button id="load_project_btn" type="button" class="btn btn-warning" style="position: absolute; left: 247px; bottom: 9px;" 
+	<button id="load_project_btn" type="button" class="btn btn-warning" style="position: absolute; left: 151px; bottom: 9px;" 
 	onclick="input_click()" title="Load existing project">Load Project</button>
-	<input type="file" id="project_file" accept='.xml' style="display: none; position: absolute; left: 247px; bottom: 9px;"/>
+	<input type="file" id="project_file" accept='.xml' style="display: none; position: absolute; left: 151px; bottom: 9px;"/>
 
 	
 	<button id="export_code_btn" type="button" class="btn btn-success" style="position: absolute; right: 367px; bottom: 9px;" 
@@ -249,6 +249,7 @@
           </shadow>
         </value>
       </block>
+	  <block type="text_startswith"></block>
     </category>
     <category id="catLists" colour="260" name="Lists">
       <block type="lists_create_with">
@@ -343,7 +344,7 @@
     <category id="catVariables" colour="330" custom="VARIABLE" name="Variables"></category>
     <category id="catFunctions" colour="290" custom="PROCEDURE" name="Functions"></category>
 	<sep></sep>
-	<category  id="catBP" name="BP" colour="0">
+	<category  id="catBP_BASIC" name="BP Basic" colour="0">
 		<label text="Plug the following blocks:" web-class="explanatoryBPLabelStyle"></label>
 		<block type="bp_event">
 		  <value name="NAME">
@@ -381,6 +382,22 @@
 		  </block>
 
     </category>
+	
+	<category  id="catBP_ADVANCED" name="BP Advanced" colour="0">
+	<block type="bp_eventset">
+    <value name="COND">
+      <block type="text_startswith">
+        <value name="A">
+          <block type="bp_event_name"></shadow>
+        </value>
+      </block>
+    </value>
+  </block>
+	</category>
+
+	
+       
+
   </xml>
  
  <xml id="blocklyDefault" style="display: none">

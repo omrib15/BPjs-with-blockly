@@ -48,7 +48,7 @@ Blockly.defineBlocksWithJsonArray([
       "check": "BP_EVENT"
     }
   ],
-  "output": ["BP_EVENT_LIST","Array"],
+  "output": ["BP_EVENT_LIST","Array","BP_EVENT_SET"],
   "colour": 15,
   "tooltip": "A list of BP Events",
   "helpUrl": ""
@@ -61,7 +61,7 @@ Blockly.defineBlocksWithJsonArray([
     {
       "type": "input_value",
       "name": "WAIT",
-      "check": ["BP_EVENT","BP_EVENT_LIST","Array"]
+      "check": ["BP_EVENT","BP_EVENT_LIST","Array","BP_EVENT_SET"]
     },
     {
       "type": "input_value",
@@ -71,7 +71,7 @@ Blockly.defineBlocksWithJsonArray([
     {
       "type": "input_value",
       "name": "BLOCK",
-      "check": ["BP_EVENT","BP_EVENT_LIST","Array"]
+      "check": ["BP_EVENT","BP_EVENT_LIST","Array","BP_EVENT_SET"]
     }
   ],
   "previousStatement": null,
@@ -87,7 +87,7 @@ Blockly.defineBlocksWithJsonArray([
     {
       "type": "input_value",
       "name": "WAIT",
-      "check": ["BP_EVENT","BP_EVENT_LIST","Array"]
+      "check": ["BP_EVENT","BP_EVENT_LIST","Array","BP_EVENT_SET"]
     },
     {
       "type": "input_value",
@@ -97,7 +97,7 @@ Blockly.defineBlocksWithJsonArray([
     {
       "type": "input_value",
       "name": "BLOCK",
-      "check": ["BP_EVENT","BP_EVENT_LIST","Array"]
+      "check": ["BP_EVENT","BP_EVENT_LIST","Array","BP_EVENT_SET"]
     }
   ],
   "output":"BP_EVENT",
@@ -122,6 +122,60 @@ Blockly.defineBlocksWithJsonArray([
   "inputsInline": true,
   "colour": 55,
   "tooltip": "A single BThread",
+  "helpUrl": ""
+},
+
+{
+  "type": "bp_event_name",
+  "message0": "The event's name",
+  "output": "String",
+  "colour": 0,
+  "tooltip": "The name of the event considered for selection",
+  "helpUrl": ""
+},
+
+{
+  "type": "bp_eventset",
+  "message0": "All events so that: %1 %2",
+  "args0": [
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "input_value",
+      "name": "COND",
+      "check": "Boolean"
+    }
+  ],
+  "inputsInline": true,
+  "output": "BP_EVENT_SET",
+  "colour": 355,
+  "tooltip": "Define a predicate over the events' name",
+  "helpUrl": ""
+},
+
+{
+  "type": "text_startswith",
+  "message0": "%1 Starts with %2 %3",
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "A",
+      "check": "String"
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "input_value",
+      "name": "B",
+      "check": "String"
+    }
+  ],
+  "inputsInline": true,
+  "output": "Boolean",
+  "colour": 180,
+  "tooltip": "Check whether or not a string begins with another string",
   "helpUrl": ""
 }
 
@@ -250,4 +304,32 @@ Blockly.JavaScript['bp_register_bthread'] = function(block) {
   var statements = Blockly.JavaScript.statementToCode(block, 'CONTENT');
   var code = 'bp.registerBThread('+name+', function(){\n'+statements+'\n});\n';
   return code;
+};
+
+
+Blockly.JavaScript['bp_event_name'] = function(block) {
+  var code = 'e.getName()';
+  return [code, Blockly.JavaScript.ORDER_NONE];
+};
+
+
+Blockly.JavaScript['text_startswith'] = function(block) {
+  var a = Blockly.JavaScript.valueToCode(block, 'A', Blockly.JavaScript.ORDER_ATOMIC) || '\'\'';
+  var b = Blockly.JavaScript.valueToCode(block, 'B', Blockly.JavaScript.ORDER_ATOMIC) || '\'\'';
+  var code = a+'.startsWith('+b+')';
+  return [code, Blockly.JavaScript.ORDER_NONE];
+};
+
+
+//just to make the EventSet names unique
+var eventset_counter = 0;
+
+
+Blockly.JavaScript['bp_eventset'] = function(block) {
+  var cond = Blockly.JavaScript.valueToCode(block, 'COND', Blockly.JavaScript.ORDER_ATOMIC);
+  eventset_counter++;
+  
+  var code = 'bp.EventSet(\"es'+eventset_counter+'\", function(e) {\n  return '+cond+';\n})';
+
+  return [code, Blockly.JavaScript.ORDER_NONE];
 };
