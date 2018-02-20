@@ -27,17 +27,21 @@ public class MainFrameFuncs {
 	private PrintStream oldStream = System.out;
 	private DefaultListModel<String> eventsModel;
 	private BProgram currBProgram;
+	private JTextArea logTextArea;
 	
 	public MainFrameFuncs(JTextArea logTextArea, DefaultListModel<String> eventsModel) {
 		this.logStream = new PrintStream(new EventOutStream(logTextArea, eventsModel));
 		this.blocklyRunner = new BlocklyRunner();
 		this.eventsModel = eventsModel;
+		this.logTextArea = logTextArea;
 		
 		
 	}
 	
 	public void runBprog(String path) throws InterruptedException{
 		
+		//clear the display for the new running program
+		clearEventsAndLog();
 		
 		BProgram bprog = new SingleResourceBProgram(path);
 		setCurrBProgram(bprog);
@@ -78,6 +82,10 @@ public class MainFrameFuncs {
 		this.logStream = logStream;
 	}
 	
+	public boolean isProgRunning(){
+		return (currentRunnerThread != null );
+	}
+	
 	public void openBlockly(){
 		try {
 			this.blocklyRunner.run();
@@ -106,6 +114,11 @@ public class MainFrameFuncs {
 
 	public void setCurrBProgram(BProgram currBProgram) {
 		this.currBProgram = currBProgram;
+	}
+	
+	private void clearEventsAndLog(){
+		eventsModel.removeAllElements();
+		logTextArea.setText("");
 	}
 
 }

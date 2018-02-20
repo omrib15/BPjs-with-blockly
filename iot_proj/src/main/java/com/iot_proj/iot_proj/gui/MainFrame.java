@@ -287,8 +287,10 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_addEventButtonActionPerformed
     
     private void enqueueSelectedEvent(){
-        funcs.enqueueExternalEvent(eventsList.getSelectedValue());
-        eventsModel.removeElement(eventsList.getSelectedValue());
+    	if(funcs.isProgRunning() && !eventsList.isSelectionEmpty()){
+    		funcs.enqueueExternalEvent(eventsList.getSelectedValue());
+    		eventsModel.removeElement(eventsList.getSelectedValue());
+    	}
     }
     
 
