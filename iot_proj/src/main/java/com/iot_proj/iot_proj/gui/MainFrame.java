@@ -13,6 +13,7 @@ import java.io.PrintStream;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.ListSelectionModel;
 
 import com.iot_proj.iot_proj.blocklyeditor.BlocklyRunner;
@@ -31,9 +32,12 @@ public class MainFrame extends javax.swing.JFrame {
 	private static final long serialVersionUID = 1L;
 	private MainFrameFuncs funcs;
     private String javaFolderAbsPath;
-	private final String relPathJsFolder;
+	private final String examplesRelPath;
+	private final String userRelPath;
     private String currFileName;
     private DefaultListModel<String> eventsModel;
+    private JFileChooser fileChooser;
+    private boolean isExample;
   
 
 	public String getJavaFolderAbsPath() {
@@ -50,10 +54,11 @@ public class MainFrame extends javax.swing.JFrame {
 
 	public void setCurrFileName(String currFileName) {
 		this.currFileName = currFileName;
+		selectedFileLabel.setText(currFileName);
 	}
 
-	public String getRelPathJsFolder() {
-		return relPathJsFolder;
+	public String getExamplesRelPath() {
+		return examplesRelPath;
 	}
 
 	public MainFrameFuncs getFuncs() {
@@ -64,7 +69,7 @@ public class MainFrame extends javax.swing.JFrame {
         //updates the file list 
         private void updateFileList(){
             //the designated js files folder
-            File folder = new File(this.javaFolderAbsPath + relPathJsFolder);
+            File folder = new File(this.javaFolderAbsPath + examplesRelPath);
             
             //iterate over the files in the folder and add them to the file list
             for (final File fileEntry : folder.listFiles()) {
@@ -90,10 +95,13 @@ public class MainFrame extends javax.swing.JFrame {
 	public MainFrame() {
         initComponents();
         setupEventsList();
+        this.fileChooser = new JFileChooser();
         this.funcs = new MainFrameFuncs(logTextArea,eventsModel);
         this.javaFolderAbsPath = System.getProperty("user.dir") + "/src/main/java/";
-        this.relPathJsFolder = "our_resources/examples/";
+        this.examplesRelPath = "our_resources/examples/";
+        this.userRelPath = "our_resources/user/";
         this.currFileName = "";
+        this.isExample = true;
        
         
         //update the file list
@@ -126,6 +134,8 @@ public class MainFrame extends javax.swing.JFrame {
         addEventButton = new javax.swing.JButton();
         clearLogButton = new javax.swing.JButton();
         removeEventButton = new javax.swing.JButton();
+        openFileButton = new javax.swing.JButton();
+        selectedFileLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(javax.swing.UIManager.getDefaults().getColor("ComboBox.selectionBackground"));
@@ -212,6 +222,15 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        openFileButton.setText("open");
+        openFileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openFileButtonActionPerformed(evt);
+            }
+        });
+
+        selectedFileLabel.setText("no file selected");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -250,8 +269,13 @@ public class MainFrame extends javax.swing.JFrame {
                         .addGap(88, 88, 88)
                         .addComponent(eventLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(234, 234, 234)
-                        .addComponent(logLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(openFileButton)
+                                .addGap(18, 18, 18)
+                                .addComponent(selectedFileLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(logLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {addEventButton, clearLogButton, enqueueButton, removeEventButton});
@@ -265,7 +289,9 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(createButton)
                     .addComponent(runButton)
-                    .addComponent(fileList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(fileList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(openFileButton)
+                    .addComponent(selectedFileLabel))
                 .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(eventLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -296,11 +322,13 @@ public class MainFrame extends javax.swing.JFrame {
 
     //action listener to the file list
     private void fileListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileListActionPerformed
-        JComboBox cb = (JComboBox)evt.getSource();
+        
+    	JComboBox cb = (JComboBox)evt.getSource();
         
         //getting the selected file's name 
         String fileName = (String)cb.getSelectedItem();
         setCurrFileName(fileName);
+        isExample = true;
     }//GEN-LAST:event_fileListActionPerformed
 
     private void createButtonActionPerformed(java.awt.event.ActionEvent evt) throws IOException {//GEN-FIRST:event_createButtonActionPerformed
@@ -322,6 +350,26 @@ public class MainFrame extends javax.swing.JFrame {
     private void removeEventButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeEventButtonActionPerformed
         eventsModel.removeElement(eventsList.getSelectedValue());
     }//GEN-LAST:event_removeEventButtonActionPerformed
+
+    private void openFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openFileButtonActionPerformed
+        int returnVal = fileChooser.showOpenDialog(MainFrame.this);
+
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            File fileInDir = new File(javaFolderAbsPath + userRelPath + file.getName());
+            setCurrFileName(file.getName());
+            
+            try {
+				funcs.copyFileUsingStream(file, fileInDir);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+            
+            isExample = false;
+        }
+        
+    }//GEN-LAST:event_openFileButtonActionPerformed
+    
     
     private void enqueueSelectedEvent(){
     	if(funcs.isProgRunning() && !eventsList.isSelectionEmpty()){
@@ -338,7 +386,12 @@ public class MainFrame extends javax.swing.JFrame {
     	
     		try {
     			//run the chosen js file 
-    			getFuncs().runBprog(relPathJsFolder + currFileName);
+    			if(isExample){
+    				funcs.runBprog(examplesRelPath + currFileName);
+    			}
+    			else{
+    				funcs.runBprog(userRelPath + currFileName);
+    			}
     		} catch (InterruptedException e) {
     			e.printStackTrace();
 			}
@@ -393,7 +446,9 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel logLabel;
     private javax.swing.JTextArea logTextArea;
     private javax.swing.JTextField newEventTextField;
+    private javax.swing.JButton openFileButton;
     private javax.swing.JButton removeEventButton;
     private javax.swing.JButton runButton;
+    private javax.swing.JLabel selectedFileLabel;
     // End of variables declaration//GEN-END:variables
 }

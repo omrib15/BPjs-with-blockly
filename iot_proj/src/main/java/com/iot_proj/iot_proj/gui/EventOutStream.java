@@ -11,7 +11,7 @@ import javax.swing.JTextArea;
 public class EventOutStream extends OutputStream {
 	private JTextArea textArea;
 	private String accStr;
-	private final String found = "[BP][Info] found:";
+	private final String found = "[BP][Info] EVENT_DETECTED:";
 	private boolean begin;
 	private DefaultListModel<String> eventsModel;
 	
