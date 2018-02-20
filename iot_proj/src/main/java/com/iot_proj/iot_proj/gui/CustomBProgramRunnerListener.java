@@ -2,6 +2,8 @@ package com.iot_proj.iot_proj.gui;
 
 import java.io.PrintStream;
 
+import javax.swing.DefaultListModel;
+
 import il.ac.bgu.cs.bp.bpjs.execution.listeners.BProgramRunnerListener;
 import il.ac.bgu.cs.bp.bpjs.model.BEvent;
 import il.ac.bgu.cs.bp.bpjs.model.BProgram;
@@ -10,13 +12,19 @@ import il.ac.bgu.cs.bp.bpjs.model.FailedAssertion;
 
 public class CustomBProgramRunnerListener implements BProgramRunnerListener {
 	private final PrintStream out;
+    private DefaultListModel<String> eventsModel;
     
-    public CustomBProgramRunnerListener( PrintStream aStream ){
+    public CustomBProgramRunnerListener( PrintStream aStream){
         out = aStream;
     }
     
     public CustomBProgramRunnerListener() {
         this( System.out );
+    }
+    
+    public CustomBProgramRunnerListener(DefaultListModel<String> eventsModel){
+    	this.out = System.out;
+    	this.eventsModel = eventsModel;
     }
 
     @Override
@@ -43,6 +51,7 @@ public class CustomBProgramRunnerListener implements BProgramRunnerListener {
     @Override
     public void eventSelected(BProgram bp, BEvent theEvent) {
         out.println(" --:" + cutBPName(bp.getName()) + " Event " + cutEventName(theEvent.toString()));
+        removeEventFromList(cutEventName(theEvent.toString()));
     }
 
     @Override
@@ -75,5 +84,11 @@ public class CustomBProgramRunnerListener implements BProgramRunnerListener {
     private String cutEventName(String name){
     	int index = name.indexOf(':') +1;
     	return name.substring(index, name.length() - 1);
+    }
+    
+    private void removeEventFromList(String name){
+    	if(eventsModel != null){
+    		eventsModel.removeElement(name);
+    	}
     }
 }
