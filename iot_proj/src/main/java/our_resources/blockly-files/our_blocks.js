@@ -120,6 +120,7 @@ Blockly.defineBlocksWithJsonArray([
     }
   ],
   "inputsInline": true,
+  "previousStatement": null,
   "colour": 55,
   "tooltip": "A single BThread",
   "helpUrl": ""
@@ -147,7 +148,7 @@ Blockly.defineBlocksWithJsonArray([
       "check": "Boolean"
     }
   ],
-  "inputsInline": true,
+  "inputsInline": false,
   "output": "BP_EVENT_SET",
   "colour": 355,
   "tooltip": "Define a predicate over the events' name",
@@ -176,6 +177,31 @@ Blockly.defineBlocksWithJsonArray([
   "output": "Boolean",
   "colour": 180,
   "tooltip": "Check whether or not a string begins with another string",
+  "helpUrl": ""
+},
+
+{
+  "type": "text_concatenate",
+  "message0": "%1 + %2 %3",
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "A",
+      "check": "String"
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "input_value",
+      "name": "B",
+      "check": "String"
+    }
+  ],
+  "inputsInline": true,
+  "output": "String",
+  "colour": 165,
+  "tooltip": "String concatenation",
   "helpUrl": ""
 }
 
@@ -222,6 +248,12 @@ Blockly.defineBlocksWithJsonArray([
 	return result
   };
   
+
+  function getEventName(dirty){
+	return dirty.substring(10,dirty.length-2);//erase the bp.Event(" and the ")
+  }	  
+  
+  
  Blockly.JavaScript['bp_bsync'] = function(block) {
   var value_wait = Blockly.JavaScript.valueToCode(block, 'WAIT', Blockly.JavaScript.ORDER_ATOMIC) || 'null';
   var value_request = Blockly.JavaScript.valueToCode(block, 'REQUEST', Blockly.JavaScript.ORDER_ATOMIC) || 'null';
@@ -254,18 +286,22 @@ Blockly.defineBlocksWithJsonArray([
   if (value_wait != 'null' && value_request != 'null' && value_block != 'null')
       code = 'bsync({waitFor: '+value_wait+',\nrequest: '+value_request+',\nblock: '+value_block+'})';
   
-  generated_line_format = '//Auto-generated code for dynamic event detection:\nbp.log.info(found: '
+  if(value_wait == 'null')
+	  return code+';\n';
+  
+  
+  generated_line_format = '//Auto-generated code for dynamic event detection:\nbp.log.info(\"EVENT_DETECTED: '
   
   //if waitFor is a list of events, generate a bp.log.nfo line for each of them, for the downstream application
   if (value_wait.startsWith('[')){
 	value_wait = value_wait.substring(1,value_wait.length-1);
 	split = value_wait.split(',');
 	split.forEach(function(entry){
-		code=generated_line_format+entry+');\n'+code;
+		code=generated_line_format+getEventName(entry.trim())+'\");\n'+code;
 	});
   }
   else
-	code=generated_line_format+value_wait+');\n'+code;
+	code=generated_line_format+getEventName(value_wait.trim())+')\";\n'+code;
   
   return code+';\n';
 };
@@ -302,19 +338,21 @@ Blockly.JavaScript['bp_bsync_with_output'] = function(block) {
   if (value_wait != 'null' && value_request != 'null' && value_block != 'null')
       code = 'bsync({waitFor: '+value_wait+',\nrequest: '+value_request+',\nblock: '+value_block+'})';
   
+  if(value_wait == 'null')
+	  return code+';\n';
   
-  generated_line_format = '//Auto-generated code for dynamic event detection:\nbp.log.info(found: '
   
-  //if waitFor is a list of events, generate a bp.log.nfo line for each of them, for the downstream application
+  generated_line_format = '//Auto-generated code for dynamic event detection:\nbp.log.info(\"EVENT_DETECTED: '
+  //if waitFor is a list of events, generate a bp.log.info line for each of them, for the downstream application
   if (value_wait.startsWith('[')){
 	value_wait = value_wait.substring(1,value_wait.length-1);
 	split = value_wait.split(',');
 	split.forEach(function(entry){
-		code=generated_line_format+entry+');\n'+code;
+		code=generated_line_format+getEventName(entry.trim())+'\");\n'+code;
 	});
   }
   else
-	code=generated_line_format+value_wait+');\n'+code;
+	code=generated_line_format+getEventName(value_wait.trim())+'\");\n'+code;
  
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
@@ -351,5 +389,12 @@ Blockly.JavaScript['bp_eventset'] = function(block) {
   
   var code = 'bp.EventSet(\"es'+eventset_counter+'\", function(e) {\n  return '+cond+';\n})';
 
+  return [code, Blockly.JavaScript.ORDER_NONE];
+};
+
+Blockly.JavaScript['text_concatenate'] = function(block) {
+  var a = Blockly.JavaScript.valueToCode(block, 'A', Blockly.JavaScript.ORDER_ATOMIC);
+  var b = Blockly.JavaScript.valueToCode(block, 'B', Blockly.JavaScript.ORDER_ATOMIC);
+  var code = a+'+'+b;
   return [code, Blockly.JavaScript.ORDER_NONE];
 };
