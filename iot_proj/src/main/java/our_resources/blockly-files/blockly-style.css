@@ -7,7 +7,7 @@
   left: 0;
   right: 0;
   overflow: visible;
-  background-color: #0097a7;
+  background-color: purple;
   box-shadow: 0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28);
   margin: 10px;
 }
@@ -20,14 +20,16 @@
 
 .blockly-panel {
   left: 8px;
-  right: 274px;
+  right: 374px;
   box-shadow: 0 1px 4px rgba(0,0,0,.37);
 }
 
 .output-panel {
   right: 8px;
-  width: 328px;
-  background-color: white;
+  /* width: 800px; */
+  /* width: 242px; */
+  width: 350px;
+  background-color: #e6e6ff;
   overflow: scroll;
   padding: 8px;
   box-shadow: 0 1px 4px rgba(0,0,0,.37);
@@ -87,4 +89,6 @@
   border: 0 !important;
   margin: 0 !important;
   padding: 0 !important;
+  background-color: #ccccff;
+
 }
