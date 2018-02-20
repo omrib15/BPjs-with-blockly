@@ -250,7 +250,7 @@ Blockly.defineBlocksWithJsonArray([
   
 
   function getEventName(dirty){
-	return dirty.substring(10,dirty.length-2);//erase the bp.Event(" and the ")
+	return dirty.substring(9,dirty.length-1);//erase the bp.Event(" and the ")
   }	  
   
   
@@ -286,22 +286,25 @@ Blockly.defineBlocksWithJsonArray([
   if (value_wait != 'null' && value_request != 'null' && value_block != 'null')
       code = 'bsync({waitFor: '+value_wait+',\nrequest: '+value_request+',\nblock: '+value_block+'})';
   
-  if(value_wait == 'null')
+  if(value_wait == 'null' || value_wait.includes('bp.EventSet'))
 	  return code+';\n';
   
   
-  generated_line_format = '//Auto-generated code for dynamic event detection:\nbp.log.info(\"EVENT_DETECTED: '
+  generated_line_format = '//Auto-generated code for dynamic event detection:\nbp.log.info(\"EVENT_DETECTED: \"+'
   
-  //if waitFor is a list of events, generate a bp.log.nfo line for each of them, for the downstream application
+ 
+  
+  
+  //if waitFor is a list of events, generate a bp.log.info line for each of them, for the downstream application
   if (value_wait.startsWith('[')){
-	value_wait = value_wait.substring(1,value_wait.length-1);
+	value_wait = value_wait.substring(1,value_wait.length-1);//remove brackets
 	split = value_wait.split(',');
 	split.forEach(function(entry){
-		code=generated_line_format+getEventName(entry.trim())+'\");\n'+code;
+		code=generated_line_format+getEventName(entry.trim())+');\n'+code;
 	});
   }
   else
-	code=generated_line_format+getEventName(value_wait.trim())+')\";\n'+code;
+	code=generated_line_format+getEventName(value_wait.trim())+');\n'+code;
   
   return code+';\n';
 };
@@ -338,21 +341,21 @@ Blockly.JavaScript['bp_bsync_with_output'] = function(block) {
   if (value_wait != 'null' && value_request != 'null' && value_block != 'null')
       code = 'bsync({waitFor: '+value_wait+',\nrequest: '+value_request+',\nblock: '+value_block+'})';
   
-  if(value_wait == 'null')
+  if(value_wait == 'null' || value_wait.includes('bp.EventSet'))
 	  return code+';\n';
   
   
-  generated_line_format = '//Auto-generated code for dynamic event detection:\nbp.log.info(\"EVENT_DETECTED: '
+  generated_line_format = '//Auto-generated code for dynamic event detection:\nbp.log.info(\"EVENT_DETECTED: \"+'
   //if waitFor is a list of events, generate a bp.log.info line for each of them, for the downstream application
   if (value_wait.startsWith('[')){
 	value_wait = value_wait.substring(1,value_wait.length-1);
 	split = value_wait.split(',');
 	split.forEach(function(entry){
-		code=generated_line_format+getEventName(entry.trim())+'\");\n'+code;
+		code=generated_line_format+getEventName(entry.trim())+');\n'+code;
 	});
   }
   else
-	code=generated_line_format+getEventName(value_wait.trim())+'\");\n'+code;
+	code=generated_line_format+getEventName(value_wait.trim())+');\n'+code;
  
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
