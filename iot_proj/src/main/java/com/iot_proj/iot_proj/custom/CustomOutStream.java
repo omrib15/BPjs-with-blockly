@@ -1,4 +1,4 @@
-package com.iot_proj.iot_proj.gui;
+package com.iot_proj.iot_proj.custom;
 
 import java.io.IOException;
 import java.io.OutputStream;

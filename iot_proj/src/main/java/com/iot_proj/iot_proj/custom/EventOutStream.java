@@ -1,4 +1,4 @@
-package com.iot_proj.iot_proj.gui;
+package com.iot_proj.iot_proj.custom;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -11,7 +11,7 @@ import javax.swing.JTextArea;
 public class EventOutStream extends OutputStream {
 	private JTextArea textArea;
 	private String accStr;
-	private final String found = "[BP][Info] found:";
+	private final String found = "[BP][Info] EVENT_DETECTED:";
 	private boolean begin;
 	private DefaultListModel<String> eventsModel;
 	
