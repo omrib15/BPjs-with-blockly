@@ -12,9 +12,9 @@ function getBrightness(event_name) {
  */
 function update_brightness(inc) {
   if (inc < 0) {
-    BRIGHTNESS = Math.max.apply(null, [0, BRIGHTNESS + inc]);
+    BRIGHTNESS = Math.max.apply(null, [0, (parseInt(BRIGHTNESS)) + inc]);
   } else {
-    BRIGHTNESS = Math.min.apply(null, [100, BRIGHTNESS + inc]);
+    BRIGHTNESS = Math.min.apply(null, [100, (parseInt(BRIGHTNESS)) + inc]);
   }
 }
 
@@ -37,7 +37,7 @@ bp.registerBThread('User-setting-off', function(){
 
 bp.registerBThread('User-setting-update', function(){
   while (true) {
-    e = bsync({waitFor: (bp.EventSet("es2873", function(e) {
+    e = bsync({waitFor: (bp.EventSet("es424", function(e) {
       return ((e.getName()).startsWith('User:'));
     }))});
     USER_BRIGHTNESS = true;
@@ -50,12 +50,14 @@ bp.registerBThread('User-setting-update', function(){
 
 bp.registerBThread('Camera-brightness-listener', function(){
   while (true) {
-    e = bsync({waitFor: (bp.EventSet("es2874", function(e) {
+    e = bsync({waitFor: (bp.EventSet("es425", function(e) {
       return ((e.getName()).startsWith('Camera:'));
     }))});
-    camera_brightness = getBrightness((e.getName()));
-    update_brightness((BRIGHTNESS - camera_brightness) / 2);
-    bsync({request: bp.Event(('Brightness updated to: '+BRIGHTNESS))});
+    if (!USER_BRIGHTNESS) {
+      camera_brightness = getBrightness((e.getName()));
+      update_brightness((camera_brightness - BRIGHTNESS) / 2);
+      bsync({request: bp.Event(('Brightness updated to: '+BRIGHTNESS))});
+    }
   }
 
 });
@@ -65,8 +67,10 @@ bp.registerBThread('battery-inc-listener', function(){
     //Auto-generated code for dynamic event detection:
     bp.log.info("EVENT_DETECTED: "+'Battery: +1');
     bsync({waitFor: bp.Event('Battery: +1')});
-    update_brightness(1);
-    bsync({request: bp.Event(('Brightness updated to: '+BRIGHTNESS))});
+    if (!USER_BRIGHTNESS) {
+      update_brightness(1);
+      bsync({request: bp.Event(('Brightness updated to: '+BRIGHTNESS))});
+    }
   }
 
 });
@@ -76,22 +80,9 @@ bp.registerBThread('battery-dec-listener', function(){
     //Auto-generated code for dynamic event detection:
     bp.log.info("EVENT_DETECTED: "+'Battery: -1');
     bsync({waitFor: bp.Event('Battery: -1')});
-    update_brightness(-1);
-    bsync({request: bp.Event(('Brightness updated to: '+BRIGHTNESS))});
-  }
-
-});
-
-bp.registerBThread('blocker', function(){
-  while (true) {
-    if (USER_BRIGHTNESS) {
-      bsync({block: (bp.EventSet("es2875", function(e) {
-        return (((e.getName()).startsWith('Camera:')) || ((e.getName()).startsWith('Battery: ')));
-      }))});
-    } else {
-      //Auto-generated code for dynamic event detection:
-      bp.log.info("EVENT_DETECTED: "+('Brightness updated to: '+user_request));
-      bsync({waitFor: bp.Event(('Brightness updated to: '+user_request))});
+    if (!USER_BRIGHTNESS) {
+      update_brightness(-1);
+      bsync({request: bp.Event(('Brightness updated to: '+BRIGHTNESS))});
     }
   }
 
