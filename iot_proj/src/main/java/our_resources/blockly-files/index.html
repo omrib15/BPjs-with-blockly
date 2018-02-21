@@ -19,7 +19,7 @@
 <div class="app-container">
 
 <!--868px-->
-  <div id="blocklyDiv" style = "height: 93%;" class="main blockly-panel"></div>
+  <div id="blocklyDiv" style = "height: 90%;" class="main blockly-panel"></div>
   <div id="buttons">
 	<button id="save_project_btn" type="button" class="btn btn-warning" style="position: absolute; left: 9px; bottom: 9px;" 
 	onclick="save_project()" title="Save your project">Save Project As..</button>
@@ -263,6 +263,11 @@
           </shadow>
         </value>
       </block>
+	  <block type="text_parseint">
+	  <shadow type="text">
+            <field name="TEXT">a</field>
+          </shadow>
+		  </block>
     </category>
     <category id="catLists" colour="260" name="Lists">
       <block type="lists_create_with">
@@ -379,13 +384,13 @@
 		
 		
 		<sep gap="20"></sep>
-		<label id="2nd-label" text="To the following blocks' wait/request/block fields:" web-class="explanatoryBPLabelStyle"></label>
+		<label id="2nd-label" text="In the following blocks' wait/request/block fields:" web-class="explanatoryBPLabelStyle"></label>
 		<!-- <label text=<script>get2ndLabelText()</script> web-class="explanatoryBPLabelStyle"></label> -->
 		<sep gap="20"></sep>
 		<block type="bp_bsync"></block>
 		<block type="bp_bsync_with_output"></block>
 
-		<label text="And then plug it in the following block:" web-class="explanatoryBPLabelStyle"></label>
+		<label text="And then use that in the following block:" web-class="explanatoryBPLabelStyle"></label>
 		<block type="bp_register_bthread">
 		<value name="NAME">
 		     <shadow type="text">

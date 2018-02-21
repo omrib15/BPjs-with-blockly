@@ -203,6 +203,22 @@ Blockly.defineBlocksWithJsonArray([
   "colour": 165,
   "tooltip": "String concatenation",
   "helpUrl": ""
+},
+
+{
+  "type": "text_parseint",
+  "message0": "Integer %1",
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "TEXT",
+      "check": "String"
+    }
+  ],
+  "output": "Number",
+  "colour": 230,
+  "tooltip": "Turn a string to an integer",
+  "helpUrl": ""
 }
 
   ])
@@ -399,5 +415,11 @@ Blockly.JavaScript['text_concatenate'] = function(block) {
   var a = Blockly.JavaScript.valueToCode(block, 'A', Blockly.JavaScript.ORDER_ATOMIC);
   var b = Blockly.JavaScript.valueToCode(block, 'B', Blockly.JavaScript.ORDER_ATOMIC);
   var code = a+'+'+b;
+  return [code, Blockly.JavaScript.ORDER_NONE];
+};
+
+Blockly.JavaScript['text_parseint'] = function(block) {
+  var text = Blockly.JavaScript.valueToCode(block, 'TEXT', Blockly.JavaScript.ORDER_ATOMIC);
+  var code = 'parseInt('+text+')';
   return [code, Blockly.JavaScript.ORDER_NONE];
 };
