@@ -29,6 +29,8 @@ public class MainFrame extends javax.swing.JFrame {
 	/**
 	 * 
 	 */
+	//-------------------Instance Members Begin-------------------
+	
 	private static final long serialVersionUID = 1L;
 	private MainFrameFuncs funcs;
     private String javaFolderAbsPath;
@@ -38,59 +40,12 @@ public class MainFrame extends javax.swing.JFrame {
     private DefaultListModel<String> eventsModel;
     private JFileChooser fileChooser;
     private boolean isExample;
-  
-
-	public String getJavaFolderAbsPath() {
-		return javaFolderAbsPath;
-	}
-
-	public void setJavaFolderAbsPath(String javaFolderAbsPath) {
-		this.javaFolderAbsPath = javaFolderAbsPath;
-	}
-
-	public String getCurrFileName() {
-		return currFileName;
-	}
-
-	public void setCurrFileName(String currFileName) {
-		this.currFileName = currFileName;
-		selectedFileLabel.setText(currFileName);
-	}
-
-	public String getExamplesRelPath() {
-		return examplesRelPath;
-	}
-
-	public MainFrameFuncs getFuncs() {
-		return funcs;
-	}
-        
-        
-        //updates the file list 
-        private void updateFileList(){
-            //the designated js files folder
-            File folder = new File(this.javaFolderAbsPath + examplesRelPath);
-            
-            //iterate over the files in the folder and add them to the file list
-            for (final File fileEntry : folder.listFiles()) {
-                fileList.addItem(fileEntry.getName());
-            }
-        }
-        
-        
-        private void setupEventsList(){
-        	this.eventsModel = new DefaultListModel<String>();
-        	this.eventsList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-            this.eventsList.setModel(eventsModel);
-            this.eventsList.addMouseListener(new MouseAdapter(){
-            	public void mouseClicked(MouseEvent e) {
-                    if (e.getClickCount() == 2) {
-                    	//enqueue the selected event
-                    	enqueueSelectedEvent();
-                    }
-            	}});
-        }
+    
+  //-------------------Instance Members End-------------------
+    
 	
+    //-----------------------------Constructors Begin-----------------------------
+    
 	//the empty constructor
 	public MainFrame() {
         initComponents();
@@ -109,6 +64,10 @@ public class MainFrame extends javax.swing.JFrame {
         
         }
 	
+	//-----------------------------Constructors End-----------------------------
+	
+	
+	//-------------------------Don't touch initComponents----------------
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -147,7 +106,6 @@ public class MainFrame extends javax.swing.JFrame {
         setName("MainFrame"); // NOI18N
         setResizable(false);
 
-        runButton.setBackground(new java.awt.Color(255, 255, 255));
         runButton.setText("Run:");
         runButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         runButton.addActionListener(new java.awt.event.ActionListener() {
@@ -168,14 +126,13 @@ public class MainFrame extends javax.swing.JFrame {
 
         createButton.setText("Create");
         createButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {     
-					try {
-						createButtonActionPerformed(evt);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                try {
+					createButtonActionPerformed(evt);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
 
@@ -203,13 +160,19 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         newEventTextField.setText("event1");
+        newEventTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newEventTextFieldActionPerformed(evt);
+            }
+        });
 
-        addEventButton.setText("add event");
+        addEventButton.setText(">");
         addEventButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addEventButtonActionPerformed(evt);
             }
         });
+       
 
         clearLogButton.setText("Clear Log");
         clearLogButton.addActionListener(new java.awt.event.ActionListener() {
@@ -249,7 +212,7 @@ public class MainFrame extends javax.swing.JFrame {
                                 .addGap(19, 19, 19)
                                 .addComponent(eventLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(examplesLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 483, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 487, Short.MAX_VALUE)
                         .addComponent(jLabel3)
                         .addGap(56, 56, 56))
                     .addGroup(layout.createSequentialGroup()
@@ -260,9 +223,9 @@ public class MainFrame extends javax.swing.JFrame {
                                     .addComponent(newEventTextField))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(addEventButton)
                                     .addComponent(enqueueButton)
-                                    .addComponent(removeEventButton)))
+                                    .addComponent(removeEventButton)
+                                    .addComponent(addEventButton)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(79, 79, 79)
                                 .addComponent(fileList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -291,7 +254,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGap(146, 146, 146))
         );
 
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {addEventButton, clearLogButton, enqueueButton, removeEventButton});
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {clearLogButton, enqueueButton, removeEventButton});
 
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -326,18 +289,27 @@ public class MainFrame extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(newEventTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(addEventButton)))
+                                    .addComponent(addEventButton, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(clearLogButton))
-                        .addGap(0, 154, Short.MAX_VALUE)))
+                        .addGap(0, 157, Short.MAX_VALUE)))
                 .addContainerGap())
         );
+
+        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {addEventButton, newEventTextField});
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    
+    
+    
+    //----------------Action listeners Begin---------------------
+    
+    
+    
     //action listener to the file list
     private void fileListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileListActionPerformed
-        
     	JComboBox cb = (JComboBox)evt.getSource();
         
         //getting the selected file's name 
@@ -355,9 +327,10 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_enqueueButtonActionPerformed
 
     private void addEventButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addEventButtonActionPerformed
-    	
-        funcs.enqueueExternalEvent(newEventTextField.getText());
-    	//eventsModel.addElement(newEventTextField.getText());
+    	if(funcs.isProgRunning()){
+    		funcs.enqueueExternalEvent(newEventTextField.getText());
+    	}
+       
     }//GEN-LAST:event_addEventButtonActionPerformed
 
     private void clearLogButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearLogButtonActionPerformed
@@ -386,14 +359,12 @@ public class MainFrame extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_openFileButtonActionPerformed
-    
-    
-    private void enqueueSelectedEvent(){
-    	if(funcs.isProgRunning() && !eventsList.isSelectionEmpty()){
-    		funcs.enqueueExternalEvent(eventsList.getSelectedValue());
-    		eventsModel.removeElement(eventsList.getSelectedValue());
-    	}
-    }
+
+    private void newEventTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newEventTextFieldActionPerformed
+        
+        	addEventButtonActionPerformed(evt);
+        
+    }//GEN-LAST:event_newEventTextFieldActionPerformed
     
 
     //click event listener for the run button
@@ -405,6 +376,7 @@ public class MainFrame extends javax.swing.JFrame {
     			//run the chosen js file 
     			if(isExample){
     				funcs.runBprog(examplesRelPath + currFileName);
+    				
     			}
     			else{
     				funcs.runBprog(userRelPath + currFileName);
@@ -417,8 +389,54 @@ public class MainFrame extends javax.swing.JFrame {
     	
     	
     }
+    
+    //----------------End Action listeners-----------------
+    
+    
+    
+    
+    
+    //----------------Helpers Begin------------------------------
+    
+    private void enqueueSelectedEvent(){
+    	if(funcs.isProgRunning() && !eventsList.isSelectionEmpty()){
+    		funcs.enqueueExternalEvent(eventsList.getSelectedValue());
+    		eventsModel.removeElement(eventsList.getSelectedValue());
+    	}
+    }
+    
+    
+    //updates the file list 
+    private void updateFileList(){
+        //the designated js files folder
+        File folder = new File(this.javaFolderAbsPath + examplesRelPath);
+        
+        //iterate over the files in the folder and add them to the file list
+        for (final File fileEntry : folder.listFiles()) {
+            fileList.addItem(fileEntry.getName());
+        }
+    }
+    
+    
+    private void setupEventsList(){
+    	this.eventsModel = new DefaultListModel<String>();
+    	this.eventsList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        this.eventsList.setModel(eventsModel);
+        this.eventsList.addMouseListener(new MouseAdapter(){
+        	public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                	//enqueue the selected event
+                	enqueueSelectedEvent();
+                }
+        	}});
+    }
+    
+    
+    //----------------End helpers--------------------------
 
 
+    
+    
 	/**
      * @param args the command line arguments
      */
@@ -448,7 +466,37 @@ public class MainFrame extends javax.swing.JFrame {
 
         
     }
+    
+    //-------------Setters and getters----------------
+    public String getJavaFolderAbsPath() {
+		return javaFolderAbsPath;
+	}
 
+	public void setJavaFolderAbsPath(String javaFolderAbsPath) {
+		this.javaFolderAbsPath = javaFolderAbsPath;
+	}
+
+	public String getCurrFileName() {
+		return currFileName;
+	}
+
+	public void setCurrFileName(String currFileName) {
+		this.currFileName = currFileName;
+		selectedFileLabel.setText(currFileName);
+	}
+
+	public String getExamplesRelPath() {
+		return examplesRelPath;
+	}
+
+	public MainFrameFuncs getFuncs() {
+		return funcs;
+	}
+	
+	
+    //-------------End setters and getters------------
+
+	
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addEventButton;
     private javax.swing.JButton clearLogButton;

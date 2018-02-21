@@ -14,6 +14,8 @@ import javax.swing.JList;
 import javax.swing.JTextArea;
 
 import com.iot_proj.iot_proj.blocklyeditor.BlocklyRunner;
+import com.iot_proj.iot_proj.custom.CustomBProgramRunnerListener;
+import com.iot_proj.iot_proj.custom.EventOutStream;
 
 import il.ac.bgu.cs.bp.bpjs.execution.BProgramRunner;
 import il.ac.bgu.cs.bp.bpjs.execution.listeners.BProgramRunnerListener;
@@ -25,6 +27,9 @@ import il.ac.bgu.cs.bp.bpjs.model.SingleResourceBProgram;
 
 
 public class MainFrameFuncs {
+	
+	//-----------------Instance Members Begin-----------------------
+	
 	private PrintStream logStream;
 	private Thread currentRunnerThread;
 	private BlocklyRunner blocklyRunner;
@@ -32,6 +37,10 @@ public class MainFrameFuncs {
 	private DefaultListModel<String> eventsModel;
 	private BProgram currBProgram;
 	private JTextArea logTextArea;
+	
+	//-----------------Instance Members End-----------------------
+	
+	//----------------Constructors Begin--------------------------
 	
 	public MainFrameFuncs(JTextArea logTextArea, DefaultListModel<String> eventsModel) {
 		this.logStream = new PrintStream(new EventOutStream(logTextArea, eventsModel));
@@ -41,6 +50,12 @@ public class MainFrameFuncs {
 		
 		
 	}
+	
+	//----------------Constructors End--------------------------
+	
+	
+	
+	//----------------------MainFrame helper functions Begin -----------------------
 	
 	public void runBprog(String path) throws InterruptedException{
 		
@@ -78,14 +93,6 @@ public class MainFrameFuncs {
 	}
 	
 	
-	public PrintStream getLogStream() {
-		return logStream;
-	}
-
-	public void setLogStream(PrintStream logStream) {
-		this.logStream = logStream;
-	}
-	
 	public boolean isProgRunning(){
 		return (currentRunnerThread != null );
 	}
@@ -98,6 +105,10 @@ public class MainFrameFuncs {
 		}
 	}
 	
+	public void clearEventsAndLog(){
+		eventsModel.removeAllElements();
+		logTextArea.setText("");
+	}
 	
 	public void enqueueExternalEvent(String eventName){
 		currBProgram.enqueueExternalEvent(new BEvent(eventName));
@@ -128,6 +139,11 @@ public class MainFrameFuncs {
             os.close();
         }
     }
+    
+  //----------------------MainFrame helper functions End -----------------------
+    
+    
+    //---------------------Setters and getters Begin--------------------
 
 	public BProgram getCurrBProgram() {
 		return currBProgram;
@@ -137,10 +153,17 @@ public class MainFrameFuncs {
 		this.currBProgram = currBProgram;
 	}
 	
-	private void clearEventsAndLog(){
-		eventsModel.removeAllElements();
-		logTextArea.setText("");
+	public PrintStream getLogStream() {
+		return logStream;
 	}
+
+	public void setLogStream(PrintStream logStream) {
+		this.logStream = logStream;
+	}
+	
+	
+	//---------------------Setters and getters End--------------------
+	
 
 }
 
