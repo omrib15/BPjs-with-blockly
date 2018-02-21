@@ -4,7 +4,7 @@ var Count, tankWaterAmount, x, amount, tankMaxCapacity, text, e, event_name;
  * Describe this function...
  */
 function addWater(amount) {
-  tankWaterAmount = (parseInt(tankWaterAmount)) + (parseInt(amount));
+  tankWaterAmount = tankWaterAmount + amount;
   if (tankWaterAmount >= tankMaxCapacity) {
     tankWaterAmount = 100;
   }
@@ -14,7 +14,7 @@ function addWater(amount) {
  * Describe this function...
  */
 function drawWater(amount) {
-  tankWaterAmount = (parseInt(tankWaterAmount)) - (parseInt(amount));
+  tankWaterAmount = tankWaterAmount - amount;
   if (tankWaterAmount <= 0) {
     tankWaterAmount = 0;
   }
@@ -42,7 +42,7 @@ function is_draw(event_name) {
 
 function subsequenceFromStartLast(sequence, at1) {
   var start = at1;
-  var end = sequence.length() - 1 + 1;
+  var end = sequence.length - 1 + 1;
   return sequence.slice(start, end);
 }
 
@@ -52,10 +52,10 @@ tankWaterAmount = 0;
 
 bp.registerBThread('Rain ', function(){
   while (true) {
-    e = bsync({waitFor: (bp.EventSet("es357", function(e) {
+    e = bsync({waitFor: (bp.EventSet("es187", function(e) {
       return (is_rain((e.getName())));
     }))});
-    addWater(subsequenceFromStartLast((e.getName()), 6));
+    addWater((parseInt((subsequenceFromStartLast((e.getName()), 6)))));
     bsync({request: bp.Event(('Current water amount: '+tankWaterAmount))});
     if (tankWaterAmount == tankMaxCapacity) {
       bsync({request: bp.Event('Tank full')});
@@ -66,10 +66,10 @@ bp.registerBThread('Rain ', function(){
 
 bp.registerBThread('Draw', function(){
   while (true) {
-    e = bsync({waitFor: (bp.EventSet("es358", function(e) {
+    e = bsync({waitFor: (bp.EventSet("es188", function(e) {
       return (is_draw((e.getName())));
     }))});
-    drawWater(subsequenceFromStartLast((e.getName()), 6));
+    drawWater((parseInt((subsequenceFromStartLast((e.getName()), 6)))));
     bsync({request: bp.Event(('Current water amount: '+tankWaterAmount))});
     if (tankWaterAmount == 0) {
       bsync({request: bp.Event('Tank empty, can\'t draw any more')});
