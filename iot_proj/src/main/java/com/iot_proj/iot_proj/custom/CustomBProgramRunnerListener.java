@@ -51,6 +51,12 @@ public class CustomBProgramRunnerListener implements BProgramRunnerListener {
     @Override
     public void eventSelected(BProgram bp, BEvent theEvent) {
         out.println(" --:" + cutBPName(bp.getName()) + " Event " + cutEventName(theEvent.toString()));
+        try {
+			Thread.currentThread().sleep(500);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         removeEventFromList(cutEventName(theEvent.toString()));
     }
 

@@ -52,8 +52,12 @@ public class EventOutStream extends OutputStream {
 				if(accStr.contains(found)){
 					if(ch.equals("\n")){
 						//add the found event to the list of events
-						eventsModel.addElement(accStr.substring(found.length()+1,accStr.length()-2));
+						String eventname = accStr.substring(found.length()+1,accStr.length()-2);
 						
+						//check if the event is already on the list
+						if(!eventsModel.contains(eventname)){
+							eventsModel.addElement(accStr.substring(found.length()+1,accStr.length()-2));
+						}
 						begin = false;
 						accStr = "";
 					} 
