@@ -4,7 +4,7 @@ var Count, MAX_TEMP, MIN_TEMP, text, x, event_name;
  * Is this event a temperature event?
  */
 function is_temp_event(event_name) {
-  return event_name.startsWith('Temp:');
+  return event_name.startsWith('Temp: ');
 }
 
 /**
@@ -35,16 +35,16 @@ function tooCold(event_name) {
 }
 
 
+40;
+
 MAX_TEMP = '40';
 MIN_TEMP = '20';
-
-40;
 
 20;
 
 bp.registerBThread('AC-cold', function(){
   while (true) {
-    bsync({waitFor: (bp.EventSet("es388", function(e) {
+    bsync({waitFor: (bp.EventSet("es466", function(e) {
       return (tooHot((e.getName())));
     }))});
     bsync({request: bp.Event('AC: set to cold'),
@@ -67,7 +67,7 @@ bp.registerBThread('Lights-auto-turnoff', function(){
 
 bp.registerBThread('Thermostat-update-display', function(){
   while (true) {
-    bsync({waitFor: (bp.EventSet("es389", function(e) {
+    bsync({waitFor: (bp.EventSet("es467", function(e) {
       return (is_temp_event((e.getName())));
     }))});
     bsync({request: bp.Event('Thermostat: update display')});
@@ -77,9 +77,10 @@ bp.registerBThread('Thermostat-update-display', function(){
 
 bp.registerBThread('AC-heat', function(){
   while (true) {
-    bsync({waitFor: (bp.EventSet("es390", function(e) {
+    bsync({waitFor: (bp.EventSet("es468", function(e) {
       return (tooCold((e.getName())));
     }))});
+	bp.log.info("AC-Cooler wakes up");
     bsync({request: bp.Event('AC: set to heat'),
     block: bp.Event('AC: set to cold')});
   }
