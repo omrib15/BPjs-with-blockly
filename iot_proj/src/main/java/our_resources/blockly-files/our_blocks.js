@@ -342,8 +342,7 @@ Blockly.JavaScript['bp_bsync_with_output'] = function(block) {
       code = 'bsync({waitFor: '+value_wait+',\nrequest: '+value_request+',\nblock: '+value_block+'})';
   
   if(value_wait == 'null' || value_wait.includes('bp.EventSet'))
-	  return code+';\n';
-  
+	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
   
   generated_line_format = '//Auto-generated code for dynamic event detection:\nbp.log.info(\"EVENT_DETECTED: \"+'
   //if waitFor is a list of events, generate a bp.log.info line for each of them, for the downstream application
@@ -357,6 +356,7 @@ Blockly.JavaScript['bp_bsync_with_output'] = function(block) {
   else
 	code=generated_line_format+getEventName(value_wait.trim())+');\n'+code;
  
+ //return code;
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
